@@ -1,0 +1,83 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html { scroll-behavior: smooth; }
+
+  body {
+    @apply font-body text-body bg-white antialiased;
+    font-size: 1rem;
+  }
+
+  h1, h2, h3, h4 { @apply font-display text-ink; }
+
+  p { @apply text-body leading-relaxed; }
+}
+
+@layer components {
+
+  /* ── Buttons ─────────────────────────────────────────────── */
+  .btn {
+    @apply inline-flex items-center gap-2 font-body font-medium
+           rounded-full transition-all duration-200 text-small
+           focus-visible:outline-2 focus-visible:outline-offset-2;
+  }
+  .btn-primary {
+    @apply btn bg-forest text-white px-7 py-3
+           hover:bg-midgreen focus-visible:outline-forest;
+  }
+  /* UJ orange — used only on the Join/CTA button */
+  .btn-join {
+    @apply btn bg-uj text-white px-7 py-3
+           hover:opacity-90 focus-visible:outline-uj;
+  }
+  .btn-outline {
+    @apply btn border border-forest text-forest px-7 py-3
+           hover:bg-forest hover:text-white;
+  }
+  .btn-ghost {
+    @apply btn text-muted px-4 py-2
+           hover:text-ink hover:bg-surface;
+  }
+
+  /* ── Section spacing ──────────────────────────────────────── */
+  .section { @apply py-section; }
+  .section-sm { @apply py-section-sm; }
+  .container { @apply max-w-site mx-auto px-6 lg:px-10; }
+
+  /* ── Typography helpers ───────────────────────────────────── */
+  .eyebrow {
+    @apply font-body text-xs font-semibold tracking-[0.12em]
+           uppercase text-forest mb-3;
+  }
+  .section-heading {
+    @apply font-display text-h1 text-ink mb-5;
+  }
+  .section-lead {
+    @apply text-lead text-muted max-w-prose;
+  }
+
+  /* ── Cards ────────────────────────────────────────────────── */
+  .card {
+    @apply bg-white rounded-2xl overflow-hidden border border-border
+           transition-shadow duration-200 hover:shadow-md;
+  }
+
+  /* ── Tag / badge ──────────────────────────────────────────── */
+  .tag {
+    @apply inline-block font-body text-xs font-semibold
+           tracking-wide uppercase px-3 py-1 rounded-full;
+  }
+
+  /* ── Divider ──────────────────────────────────────────────── */
+  .divider { @apply border-t border-border; }
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}

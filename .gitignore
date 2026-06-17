@@ -1,0 +1,39 @@
+# Dependencies
+node_modules/
+.pnp
+.pnp.js
+
+# Build outputs
+dist/
+build/
+.turbo/
+
+# Environment files — NEVER commit these
+.env
+.env.local
+.env.production
+.env*.local
+
+# Uploaded zips and temporary files
+*.zip
+*.tar.gz
+
+# macOS
+.DS_Store
+**/.DS_Store
+
+# Editor
+.vscode/
+.idea/
+
+# Logs
+*.log
+npm-debug.log*
+
+# Large media that shouldn't be in git
+# (images are fine, videos are not)
+*.MOV
+*.mov
+*.mp4
+*.CR2
+*.pptx
