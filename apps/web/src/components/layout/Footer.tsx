@@ -82,7 +82,7 @@ export default function Footer() {
               Built by CODE — Centre of Design and Engineering
             </p>
             <a
-              href="http://localhost:3001/cms"
+              href="https://cms.reclaimingpraxis.code7.co.za"
               className="font-body text-xs text-white/20 hover:text-white/60 transition-colors
                          border border-white/10 hover:border-white/30 px-3 py-1 rounded-lg"
             >
