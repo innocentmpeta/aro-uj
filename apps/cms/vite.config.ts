@@ -4,10 +4,6 @@ import path from 'path'
 
 export default defineConfig({
   plugins: [react()],
-  build: {
-    outDir: '../../dist-cms',
-    emptyOutDir: true,
-  },
   resolve: {
     alias: {
       '@': path.resolve(__dirname, './src'),
