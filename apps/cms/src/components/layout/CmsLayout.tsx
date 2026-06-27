@@ -6,19 +6,20 @@ import { useAuth } from '../../context/AuthContext'
 import {
   LayoutDashboard, Newspaper, Folder, BookOpen,
   FileText, Users, BarChart2, Settings,
-  LogOut, ChevronRight, Layers
+  LogOut, ChevronRight, Layers, Package
 } from 'lucide-react'
 
 const NAV_ITEMS = [
-  { to: '/cms',               icon: LayoutDashboard, label: 'Dashboard',          end: true },
-  { to: '/cms/sections',      icon: Layers,          label: 'Page Sections',       end: false },
-  { to: '/cms/news',          icon: Newspaper,       label: 'News & Updates',      end: false },
-  { to: '/cms/projects',      icon: Folder,          label: 'Network Projects',    end: false },
-  { to: '/cms/team',          icon: Users,           label: 'Team Members',        end: false },
-  { to: '/cms/research',      icon: BookOpen,        label: 'Research',            end: false },
-  { to: '/cms/resources',     icon: FileText,        label: 'Free Downloads',      end: false },
-  { to: '/cms/stats',         icon: BarChart2,       label: 'Homepage Numbers',    end: false },
-  { to: '/cms/settings',      icon: Settings,        label: 'Site Settings',       end: false },
+  { to: '/cms',                icon: LayoutDashboard, label: 'Dashboard',           end: true },
+  { to: '/cms/sections',       icon: Layers,          label: 'Page Sections',       end: false },
+  { to: '/cms/news',           icon: Newspaper,       label: 'News & Updates',      end: false },
+  { to: '/cms/projects',       icon: Folder,          label: 'Network Projects',    end: false },
+  { to: '/cms/work-packages',  icon: Package,         label: 'Work Packages',       end: false },
+  { to: '/cms/team',           icon: Users,           label: 'Team Members',        end: false },
+  { to: '/cms/research',       icon: BookOpen,        label: 'Research',            end: false },
+  { to: '/cms/resources',      icon: FileText,        label: 'Free Downloads',      end: false },
+  { to: '/cms/stats',          icon: BarChart2,       label: 'Homepage Numbers',    end: false },
+  { to: '/cms/settings',       icon: Settings,        label: 'Site Settings',       end: false },
 ]
 
 export default function CmsLayout({ children }: { children: ReactNode }) {

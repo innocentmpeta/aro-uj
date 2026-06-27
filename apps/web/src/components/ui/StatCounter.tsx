@@ -37,7 +37,7 @@ export default function StatCounter({ value, label, prefix = '', suffix = '' }: 
     <div ref={ref} className="text-center py-2">
       <div className="font-display font-bold text-forest"
            style={{ fontSize: 'clamp(1.75rem, 3vw, 2.5rem)', lineHeight: 1.1 }}>
-        {prefix}{count.toLocaleString()}{suffix}
+        {prefix}{value >= 1000 && value <= 9999 ? count.toString() : count.toLocaleString()}{suffix}
       </div>
       <div className="font-body text-xs text-muted mt-1.5 max-w-[120px] mx-auto leading-snug">
         {label}

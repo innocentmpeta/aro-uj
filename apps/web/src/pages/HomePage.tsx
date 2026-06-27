@@ -1,39 +1,69 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
-import { ArrowRight, MapPin, BookMarked, Link2, Shield, Heart, Scale, Leaf, BookOpen, Briefcase } from 'lucide-react'
-import { THEMES, Theme } from '@arouj/types'
+import { ArrowRight, MapPin, BookMarked, Link2, Shield, ChevronRight } from 'lucide-react'
 import PageHero from '../components/ui/PageHero'
 import StatCounter from '../components/ui/StatCounter'
-import ThemeBadge from '../components/ui/ThemeBadge'
 import VideoEmbed from '../components/ui/VideoEmbed'
 import SiteImage from '../components/ui/SiteImage'
+import ThemeBadge from '../components/ui/ThemeBadge'
 import {
-  useCollection, useImpactStats, useFeaturedProject, useSectionToggles
+  useCollection, useImpactStats, useFeaturedProject,
+  useSectionToggles, useWorkPackages,
 } from '../hooks/useFirestore'
 
-// ── Image: apps/web/public/images/hero/hero.jpg ───────────────────────────
-
-const THEME_CARDS: { theme: Theme; description: string; icon: React.ElementType }[] = [
-  { theme: 'health-wellbeing',    description: 'Safety, healthcare, ECD, and reclaimer wellbeing',    icon: Heart },
-  { theme: 'rights-justice',      description: 'Legal support, EPR advocacy, SAWPRS, and policy',     icon: Scale },
-  { theme: 'design-environment',  description: 'Sorting facilities, waste systems, and solar design',  icon: Leaf },
-  { theme: 'knowledge-education', description: 'Research, training, and teaching resources',           icon: BookOpen },
-  { theme: 'economic-justice',    description: 'Payment systems, market access, buy-back advocacy',    icon: Briefcase },
+// ── Hardcoded WP fallback data (shown until Shillah edits via CMS) ─────────
+const WP_DEFAULTS = [
+  { id: 'wp1',  code: 'WP1',  title: 'Multi-Faculty Community Engagement & Coordination',
+    summary: 'Overall project management, stakeholder oversight, and coordination of activities across all participating UJ faculties and ARO.',
+    leader: 'Humanities', faculties: ['HUM', 'All UJ'], startDate: 'Aug 2024', endDate: 'Jul 2027' },
+  { id: 'wp2',  code: 'WP2',  title: 'Strengthening ARO Public Engagement',
+    summary: 'Multi-disciplinary research and multi-media interventions to improve resident support for reclaimers and reclaimer-led separation at source.',
+    leader: 'Humanities', faculties: ['HUM', 'FADA', 'FoS', 'CBE'], startDate: 'Aug 2024', endDate: 'Jul 2027' },
+  { id: 'wp3',  code: 'WP3',  title: 'ARO-UJ Youth Camp',
+    summary: 'An annual winter camp providing reclaimers\' children with multi-disciplinary educational activities and access to UJ.',
+    leader: 'TBC', faculties: ['FADA', 'HUM'], startDate: 'Feb 2025', endDate: 'Jul 2027' },
+  { id: 'wp4',  code: 'WP4',  title: 'Professionalising ARO Warehouse & Service Provision',
+    summary: 'Coordinating UJ faculty support to improve ARO Recycling Company\'s warehouse management, logistics, and business operations.',
+    leader: 'FEBE', faculties: ['FEBE', 'FADA', 'HUM'], startDate: 'Sep 2024', endDate: 'Jul 2027' },
+  { id: 'wp5',  code: 'WP5',  title: 'Landfill Closures & a Just Transition',
+    summary: 'Supporting ARO\'s campaign to negotiate social plans and retrenchment packages for reclaimers ahead of Johannesburg landfill closures.',
+    leader: 'Humanities', faculties: ['HUM', 'LAW', 'FADA', 'FEBE'], startDate: 'Aug 2024', endDate: 'Jul 2027' },
+  { id: 'wp6',  code: 'WP6',  title: 'Alternative Employment for Reclaimers',
+    summary: 'Developing new income-generation programmes, cooperatives and companies — including sewing, e-waste recycling, and eco-product design.',
+    leader: 'FADA', faculties: ['FADA', 'FEBE'], startDate: 'Aug 2024', endDate: 'Jul 2027' },
+  { id: 'wp7',  code: 'WP7',  title: 'Advancing Sustainable Development at UJ',
+    summary: 'Integrating reclaimers into UJ\'s waste management system and supporting green procurement policy reform.',
+    leader: 'FEBE', faculties: ['FEBE', 'FoS', 'HUM'], startDate: 'Jun 2023', endDate: 'Jul 2025' },
+  { id: 'wp8',  code: 'WP8',  title: 'Advancing Reclaimer Health & Wellbeing',
+    summary: 'Participatory research and community-led interventions to address health risks, psychosocial wellbeing, and gender equality among reclaimers.',
+    leader: 'Humanities', faculties: ['HUM', 'FADA', 'FoHS'], startDate: 'Sep 2024', endDate: 'Jul 2027' },
+  { id: 'wp9',  code: 'WP9',  title: 'Justice for Migrant Reclaimers',
+    summary: 'Research and advocacy to strengthen ARO\'s support for migrant reclaimers seeking legal status, social protection, and employment rights.',
+    leader: 'Law', faculties: ['LAW', 'HUM'], startDate: 'Sep 2024', endDate: 'Jul 2027' },
+  { id: 'wp10', code: 'WP10', title: 'Gender Justice & Reclaiming',
+    summary: 'Creating spaces for ARO members to engage on gender issues in the sector and developing feminist strategies to promote gender justice.',
+    leader: 'Humanities', faculties: ['HUM', 'LAW'], startDate: 'Jan 2025', endDate: 'Jul 2027' },
 ]
 
 export default function HomePage() {
-  const { sections }              = useSectionToggles()
-  const { data: statsData }       = useImpactStats()
+  const { sections }             = useSectionToggles()
+  const { data: statsData }      = useImpactStats()
   const { data: featured, loading: featuredLoading } = useFeaturedProject()
-  const { data: projects }        = useCollection<any>('projects', { publishedOnly: true })
-  const { data: news }            = useCollection<any>('news',     { publishedOnly: true })
+  const { data: projects }       = useCollection<any>('projects', { publishedOnly: true })
+  const { data: news }           = useCollection<any>('news',     { publishedOnly: true })
+  const { data: wpFromFirestore } = useWorkPackages()
 
   const stats = statsData ?? {
     yearFounded: 2022, facultiesInvolved: 7, projectsCompleted: 24,
     publicationsCount: 18, studentParticipants: 142, reclaimersInvolved: 380,
   }
 
-  // show = key is missing (default visible) OR explicitly true
+  // Merge Firestore WP data over defaults (so the CMS can override title/summary)
+  const workPackages = WP_DEFAULTS.map(def => {
+    const live = wpFromFirestore.find(w => w.id === def.id)
+    return live ? { ...def, ...live } : def
+  })
+
   const show = (key: string) => sections[key] !== false
 
   return (
@@ -43,10 +73,10 @@ export default function HomePage() {
       {show('home_hero') && (
         <PageHero
           imagePath="/images/hero/hero.jpg"
-          imageAlt="Reclaimers at work in Johannesburg"
-          eyebrow="ARO-UJ Praxis Network · Est. 2022"
+          imageAlt="Reclaimers and academics working together"
+          eyebrow="ARO-UJ Reclaiming Praxis Network · Est. 2022"
           title="Where reclaimer knowledge and academic expertise build change together."
-          lead="A partnership between the African Reclaimers Organisation and the University of Johannesburg — working where theory meets the street."
+          lead="A partnership between the African Reclaimers Organisation (ARO) and the University of Johannesburg (UJ) — working where theory meets the street."
           variant="dark"
           minHeight="88vh"
         />
@@ -68,6 +98,50 @@ export default function HomePage() {
         </section>
       )}
 
+      {/* ── PARTNER IDENTITY STRIP ───────────────────────────────────── */}
+      {show('home_partners_strip') && (
+        <section className="bg-surface border-b border-border">
+          <div className="container py-10">
+            <p className="eyebrow text-center mb-8">The partnership behind the network</p>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto">
+
+              {/* ARO */}
+              <div className="flex gap-5 items-start bg-white rounded-2xl border border-border p-6">
+                <img src="/logos/aro-logo.png" alt="African Reclaimers Organisation"
+                  className="h-14 w-auto shrink-0 object-contain" />
+                <div>
+                  <div className="font-display font-bold text-ink text-base mb-1">
+                    African Reclaimers Organisation (ARO)
+                  </div>
+                  <p className="font-body text-xs text-muted leading-relaxed">
+                    A mass-based democratic movement of reclaimers founded in Johannesburg.
+                    ARO represents reclaimers across South Africa — advocating for their
+                    recognition, livelihoods, and rights in the recycling value chain.
+                  </p>
+                </div>
+              </div>
+
+              {/* UJ */}
+              <div className="flex gap-5 items-start bg-white rounded-2xl border border-border p-6">
+                <img src="/logos/uj-logo.png" alt="University of Johannesburg"
+                  className="h-14 w-auto shrink-0 object-contain rounded" />
+                <div>
+                  <div className="font-display font-bold text-ink text-base mb-1">
+                    University of Johannesburg (UJ)
+                  </div>
+                  <p className="font-body text-xs text-muted leading-relaxed">
+                    A comprehensive South African university committed to societal impact.
+                    Seven UJ faculties — from Humanities to Engineering — participate in
+                    the network, bringing research, teaching, and design expertise.
+                  </p>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </section>
+      )}
+
       {/* ── ABOUT INTRO ──────────────────────────────────────────────── */}
       {show('home_about') && (
         <section className="section bg-white">
@@ -77,7 +151,7 @@ export default function HomePage() {
                 <p className="eyebrow">About the network</p>
                 <h2 className="section-heading">A network built on equal partnership.</h2>
                 <p className="section-lead mb-6">
-                  ARO-UJ Praxis brings together the African Reclaimers Organisation
+                  The ARO-UJ Network brings together the African Reclaimers Organisation
                   and the University of Johannesburg — not a research project on
                   reclaimers, but a collaboration <em>with</em> them.
                 </p>
@@ -92,10 +166,10 @@ export default function HomePage() {
               </div>
               <div className="grid grid-cols-2 gap-4">
                 {[
-                  { label: 'National scope',   sub: 'Johannesburg and Mpumalanga',      icon: MapPin },
+                  { label: 'National scope',   sub: 'Johannesburg and Mpumalanga',         icon: MapPin },
                   { label: '7 UJ faculties',   sub: 'Interdisciplinary, not departmental', icon: BookMarked },
-                  { label: 'Equal partners',   sub: 'ARO and UJ — neither subordinate', icon: Link2 },
-                  { label: 'Funded by UJ',     sub: 'GES 4.0 SI programme',             icon: Shield },
+                  { label: 'Equal partners',   sub: 'ARO and UJ — neither subordinate',    icon: Link2 },
+                  { label: 'Funded by UJ',     sub: 'GES 4.0 SI programme',                icon: Shield },
                 ].map(({ label, sub, icon: Icon }) => (
                   <div key={label} className="rounded-2xl border border-border p-5">
                     <div className="p-1.5 bg-greenlight rounded-lg w-fit mb-3">
@@ -111,39 +185,56 @@ export default function HomePage() {
         </section>
       )}
 
-      {/* ── FIVE THEMES ──────────────────────────────────────────────── */}
-      {show('home_themes') && (
+      {/* ── WORK PACKAGES ────────────────────────────────────────────── */}
+      {show('home_workpackages') && (
         <section className="section bg-surface">
           <div className="container">
-            <p className="eyebrow">Five themes</p>
+            <p className="eyebrow">10 work packages</p>
             <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-10">
-              <h2 className="section-heading mb-0">Interdisciplinary.<br />Community-led.</h2>
+              <h2 className="section-heading mb-0">
+                Praxis in action —<br className="hidden sm:block" /> across the whole network.
+              </h2>
               <Link to="/praxis-in-action" className="btn-ghost text-forest shrink-0">
-                See all projects <ArrowRight size={14} />
+                All projects <ArrowRight size={14} />
               </Link>
             </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3">
-              {THEME_CARDS.map(({ theme, description, icon: Icon }) => {
-                const t = THEMES[theme]
-                return (
-                  <Link key={theme} to={`/praxis-in-action?theme=${theme}`}
-                    className="group bg-white rounded-2xl border border-border p-6
-                               hover:border-forest hover:shadow-sm transition-all duration-200">
-                    <div className="p-2 bg-greenlight rounded-lg w-fit mb-4
-                                    group-hover:bg-forest transition-colors duration-200">
-                      <Icon size={24} className="text-forest group-hover:text-white transition-colors duration-200" />
-                    </div>
-                    <div className="font-display font-bold text-ink text-lg mb-2 leading-snug">
-                      {t.label}
-                    </div>
-                    <p className="font-body text-sm text-muted leading-relaxed">{description}</p>
-                    <div className="mt-5 text-xs font-body font-medium text-forest
-                                    flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
-                      View projects <ArrowRight size={11} />
-                    </div>
-                  </Link>
-                )
-              })}
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+              {workPackages.map((wp) => (
+                <Link
+                  key={wp.id}
+                  to={`/praxis-in-action?wp=${wp.id}`}
+                  className="group bg-white rounded-2xl border border-border p-5
+                             hover:border-forest hover:shadow-sm transition-all duration-200 flex flex-col"
+                >
+                  {/* Code badge */}
+                  <span className="inline-block font-body text-[10px] font-semibold
+                                   tracking-widest uppercase text-forest bg-greenlight
+                                   px-2.5 py-1 rounded-full w-fit mb-3">
+                    {wp.code}
+                  </span>
+
+                  {/* Title */}
+                  <div className="font-display font-bold text-ink text-base mb-2 leading-snug
+                                  group-hover:text-forest transition-colors flex-1">
+                    {wp.title}
+                  </div>
+
+                  {/* Summary */}
+                  <p className="font-body text-xs text-muted leading-relaxed mb-4 line-clamp-3">
+                    {wp.summary}
+                  </p>
+
+                  {/* Leader + arrow */}
+                  <div className="flex items-center justify-between mt-auto pt-3 border-t border-border">
+                    <span className="font-body text-[10px] text-muted uppercase tracking-wide">
+                      Led by {wp.leader}
+                    </span>
+                    <ChevronRight size={13}
+                      className="text-muted group-hover:text-forest transition-colors" />
+                  </div>
+                </Link>
+              ))}
             </div>
           </div>
         </section>
@@ -160,7 +251,8 @@ export default function HomePage() {
                 {featured.videoId ? (
                   <VideoEmbed videoId={featured.videoId} title={featured.title} />
                 ) : (
-                  <SiteImage src={featured.imagePath} imageBase64={featured.imageBase64} thumbnailBase64={featured.thumbnailBase64}         alt={featured.title}
+                  <SiteImage src={featured.imagePath} imageBase64={featured.imageBase64}
+                    thumbnailBase64={featured.thumbnailBase64} alt={featured.title}
                     aspectRatio="video" className="rounded-2xl" />
                 )}
               </div>
@@ -222,7 +314,8 @@ export default function HomePage() {
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               {projects.slice(0, 3).map((project: any) => (
                 <Link key={project.id} to={`/praxis-in-action/${project.slug}`} className="card group block">
-                  <SiteImage src={project.imagePath} imageBase64={project.imageBase64} thumbnailBase64={project.thumbnailBase64} alt={project.title} aspectRatio="video" />
+                  <SiteImage src={project.imagePath} imageBase64={project.imageBase64}
+                    thumbnailBase64={project.thumbnailBase64} alt={project.title} aspectRatio="video" />
                   <div className="p-6">
                     <div className="flex flex-wrap gap-1.5 mb-3">
                       {(project.themes ?? []).slice(0, 2).map((t: any) => <ThemeBadge key={t} theme={t} size="sm" />)}
@@ -259,7 +352,8 @@ export default function HomePage() {
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               {news.map((item: any) => (
                 <Link key={item.id} to={`/news/${item.slug}`} className="card group block">
-                  <SiteImage src={item.imagePath} imageBase64={item.imageBase64} thumbnailBase64={item.thumbnailBase64} alt={item.title} aspectRatio="video" />
+                  <SiteImage src={item.imagePath} imageBase64={item.imageBase64}
+                    thumbnailBase64={item.thumbnailBase64} alt={item.title} aspectRatio="video" />
                   <div className="p-6">
                     <div className="flex flex-wrap gap-1.5 mb-3">
                       {(item.themes ?? []).slice(0, 1).map((t: any) => <ThemeBadge key={t} theme={t} size="sm" />)}

@@ -118,3 +118,20 @@ export function useProjectsByProgramme(programmeId: string) {
 
   return { data, loading }
 }
+
+// ── Work packages ──────────────────────────────────────────────────────────
+export interface WorkPackage {
+  id: string          // wp1 … wp10
+  code: string        // 'WP1'
+  title: string
+  summary: string
+  leader: string
+  faculties: string[]
+  startDate: string
+  endDate: string
+  published: boolean
+}
+
+export function useWorkPackages() {
+  return useCollection<WorkPackage>('workPackages', { publishedOnly: false })
+}

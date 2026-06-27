@@ -61,9 +61,9 @@ export default function Footer() {
               Join the Network
             </Link>
             <div className="mt-6 flex flex-col gap-2">
-              <a href="mailto:praxis@uj.ac.za"
+              <a href="mailto:reclaimingpraxis@uj.ac.za"
                 className="font-body text-small text-midgreen hover:text-white transition-colors">
-                praxis@uj.ac.za
+                reclaimingpraxis@uj.ac.za
               </a>
               <a href="https://africanreclaimers.org" target="_blank" rel="noopener noreferrer"
                 className="font-body text-small text-white/40 hover:text-white transition-colors">
