@@ -12,15 +12,15 @@ import SiteImage from '../components/ui/SiteImage'
 
 const STATS = [
   { value: '~90,000',  label: 'informal reclaimers working across South Africa' },
-  { value: '80–90%',   label: 'of all recyclable waste in SA collected by reclaimers' },
-  { value: 'R780m',    label: 'saved annually in municipal landfill costs' },
+  { value: '80–90%',   label: 'of all used packaging and paper recycled in SA is collected by reclaimers' },
+  { value: 'Up to R780m', label: 'saved annually in municipal landfill airspace costs' },
   { value: '6,000+',   label: 'ARO members in Johannesburg and Mpumalanga' },
 ]
 
 const WHAT_THEY_DO = [
   { heading: 'They collect',          icon: ShoppingCart, body: 'Moving through residential streets, landfill sites, and industrial areas before and after municipal trucks, reclaimers collect paper, cardboard, glass, metals, and plastics that would otherwise go to landfill.' },
   { heading: 'They sort',             icon: Sliders,      body: 'At sorting depots and on street corners, reclaimers separate materials by type, grade, and cleanliness — skilled work that determines what can actually be recycled and at what value.' },
-  { heading: 'They sell',             icon: Tag,          body: 'Sorted materials are sold to buy-back centres and waste brokers. Reclaimers navigate a complex and often exploitative market, with little bargaining power and no formal protection.' },
+  { heading: 'They sell',             icon: Tag,          body: 'Sorted materials are sold to buy-back centres. Reclaimers navigate a complex and often exploitative market, with little bargaining power and no formal protection. This is why reclaimers organised to form ARO, so that they can improve their incomes, working conditions, power in the sector and social status.' },
   { heading: 'They sustain the system', icon: RefreshCw,  body: "South Africa's impressive recycling rates exist almost entirely because of reclaimers' labour. Without them, those materials go to landfill. Yet reclaimers remain outside the formal waste management system." },
 ]
 
@@ -43,7 +43,7 @@ export default function TheReclaimersPage() {
         imagePath="/images/reclaimers/hero.jpg"
         imageAlt="Reclaimers at work in Johannesburg"
         eyebrow="Who we work with"
-        title="The Reclaimers"
+        title="Reclaimers"
         lead="Before most of Johannesburg wakes up, reclaimers are already at work — collecting the recyclable materials that sustain South Africa's recycling economy."
         variant="dark"
       />
@@ -204,19 +204,17 @@ export default function TheReclaimersPage() {
               <div className="space-y-5 text-body text-muted">
                 <p>
                   The African Reclaimers Organisation (ARO) is a democratic,
-                  membership-based organisation of reclaimers, founded in 2018
-                  in Johannesburg. ARO unites over 6,000 reclaimers working in
-                  residential areas, landfill sites, and sorting facilities
-                  across the City of Johannesburg and into Mpumalanga.
+                  membership-based organisation of reclaimers, founded in Johannesburg
+                  in 2016, when street and landfill reclaimers in the city united to
+                  mobilise against the municipality's attempt to contract private
+                  companies to collect recyclables — a move that would have dispossessed
+                  reclaimers of their livelihoods. ARO's membership has since expanded
+                  to Mpumalanga, the Western Cape, and the Eastern Cape.
                 </p>
                 <p>
-                  ARO was born out of a crisis. In 2017, when the City of
-                  Johannesburg began awarding contracts to private companies to
-                  collect recyclable waste — displacing the reclaimers who had
-                  always done that work — reclaimers organised. They held the
-                  first-ever march of landfill and street reclaimers in
-                  Johannesburg, and ARO grew from that collective action.
-                </p>
+                  In 2023, ARO established ARO Recycling, a recycling company owned by
+                  reclaimers, through which ARO provides separation at source services
+                  to middle- and high-income areas in Johannesburg.
                 <p>
                   ARO is named 'African' because it represents reclaimers of
                   all nationalities engaged in the recycling trade. It is run by

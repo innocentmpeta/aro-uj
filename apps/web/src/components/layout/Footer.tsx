@@ -19,8 +19,7 @@ export default function Footer() {
 
           {/* Brand */}
           <div>
-            <div className="font-display font-bold text-white text-2xl mb-1">Reclaiming Praxis</div>
-            <div className="font-body text-[10px] tracking-widest uppercase text-white/30 mb-5">Network</div>
+            <div className="font-display font-bold text-white text-xl mb-5 leading-snug">ARO-UJ Reclaiming<br />Praxis Network</div>
             <p className="font-body text-small text-white/60 leading-relaxed max-w-xs">
               Where reclaimer knowledge and academic expertise meet,
               act, and build change together.

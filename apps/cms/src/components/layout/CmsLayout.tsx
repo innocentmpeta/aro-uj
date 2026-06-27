@@ -6,12 +6,13 @@ import { useAuth } from '../../context/AuthContext'
 import {
   LayoutDashboard, Newspaper, Folder, BookOpen,
   FileText, Users, BarChart2, Settings,
-  LogOut, ChevronRight, Layers, Package
+  LogOut, ChevronRight, Layers, Package, FileEdit
 } from 'lucide-react'
 
 const NAV_ITEMS = [
   { to: '/cms',                icon: LayoutDashboard, label: 'Dashboard',           end: true },
   { to: '/cms/sections',       icon: Layers,          label: 'Page Sections',       end: false },
+  { to: '/cms/page-content',   icon: FileEdit,        label: 'Page Content',        end: false },
   { to: '/cms/news',           icon: Newspaper,       label: 'News & Updates',      end: false },
   { to: '/cms/projects',       icon: Folder,          label: 'Network Projects',    end: false },
   { to: '/cms/work-packages',  icon: Package,         label: 'Work Packages',       end: false },

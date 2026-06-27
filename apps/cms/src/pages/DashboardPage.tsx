@@ -7,11 +7,12 @@ import { Card } from '../components/ui'
 interface Counts { news: number; projects: number; team: number }
 
 const QUICK_LINKS = [
-  { to: '/cms/sections',       label: 'Manage page sections',    description: 'Turn sections on or off across the site',    priority: true },
-  { to: '/cms/work-packages',  label: 'Edit work packages',      description: 'Update WP titles and summaries on the home page', priority: true },
-  { to: '/cms/news/new',       label: 'Add a news item',         description: 'Publish a new update or event',               priority: false },
-  { to: '/cms/projects/new',   label: 'Add a project',           description: 'Document a new network project',              priority: false },
-  { to: '/cms/stats',          label: 'Update homepage numbers', description: 'Keep impact statistics current',              priority: false },
+  { to: '/cms/sections',       label: 'Manage page sections',      description: 'Turn sections on or off across the site',              priority: true },
+  { to: '/cms/page-content',   label: 'Edit page text',            description: 'Update About page and Practicum text blocks',          priority: true },
+  { to: '/cms/work-packages',  label: 'Edit work packages',        description: 'Update WP titles and summaries on the home page',      priority: true },
+  { to: '/cms/news/new',       label: 'Add a news item',           description: 'Publish a new update or event',                       priority: false },
+  { to: '/cms/projects/new',   label: 'Add a project',             description: 'Document a new network project',                      priority: false },
+  { to: '/cms/stats',          label: 'Update homepage numbers',   description: 'Keep impact statistics current',                      priority: false },
 ]
 
 export default function DashboardPage() {

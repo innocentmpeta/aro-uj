@@ -135,3 +135,12 @@ export interface WorkPackage {
 export function useWorkPackages() {
   return useCollection<WorkPackage>('workPackages', { publishedOnly: false })
 }
+
+// ── Page content blocks (middle-ground CMS editability) ───────────────────
+// Each page stores its editable text in siteConfig/{pageId}
+// Structure: { [blockKey]: string }
+// Falls back to the supplied default if Firestore has no value yet.
+
+export function usePageContent(pageId: string) {
+  return useDocument<Record<string, string>>('siteConfig', pageId)
+}

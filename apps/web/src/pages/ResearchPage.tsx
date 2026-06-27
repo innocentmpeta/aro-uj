@@ -7,10 +7,11 @@ import { Theme } from '@arouj/types'
 
 // ── CrossRef API ───────────────────────────────────────────────────────────
 const SEARCH_QUERIES = [
-  'waste picker South Africa',
-  'informal recycling reclaimers',
-  'waste picker integration municipal',
-  'reclaimer livelihoods informal economy',
+  'waste picker reclaimers South Africa',
+  'informal recycling sector Africa',
+  'waste picker integration municipal policy',
+  'reclaimer livelihoods just transition',
+  'extended producer responsibility waste pickers',
 ]
 
 interface GlobalPub {
@@ -204,155 +205,129 @@ export default function ResearchPage() {
         </div>
       </section>
 
-      {/* ── TWO ZONES ─────────────────────────────────────────────────── */}
-      <section className="section bg-surface">
+      {/* ── NETWORK PUBLICATIONS — prominent, full-width ───────── */}
+      <section className="section bg-white">
         <div className="container">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
-
-            {/* ── ZONE 1: NETWORK PUBLICATIONS (Firestore) ──────────── */}
+          <div className="flex items-start justify-between gap-4 mb-10">
             <div>
-              <div className="flex items-center gap-3 mb-6">
-                <div className="p-2 bg-greenlight rounded-lg">
-                  <BookOpen size={16} className="text-forest" />
-                </div>
-                <div>
-                  <h2 className="font-display font-bold text-ink text-h3">
-                    From the Network
-                  </h2>
-                  <p className="font-body text-xs text-muted">
-                    Publications by ARO-UJ Praxis members
-                  </p>
-                </div>
-              </div>
+              <p className="eyebrow">ARO-UJ Praxis Network</p>
+              <h2 className="section-heading mb-2">Network publications</h2>
+              <p className="text-body text-muted max-w-2xl">
+                Peer-reviewed articles, reports, and publications produced by
+                ARO-UJ Praxis Network members — the primary research output of the network.
+              </p>
+            </div>
+          </div>
 
-              {networkLoading && (
-                <div className="space-y-4">
-                  {[1, 2, 3].map(i => <Skeleton key={i} />)}
-                </div>
-              )}
+          {networkLoading && (
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              {[1, 2, 3, 4].map(i => <Skeleton key={i} />)}
+            </div>
+          )}
 
-              {!networkLoading && sortedNetworkPubs.length === 0 && (
-                <div className="bg-white rounded-2xl border border-dashed border-border p-8 text-center">
-                  <BookOpen size={24} className="text-muted mx-auto mb-3" />
-                  <p className="font-body text-sm text-muted mb-1">
-                    No publications added yet.
-                  </p>
-                  <p className="font-body text-xs text-muted">
-                    Network researchers can submit publications via the{' '}
-                    <a href="mailto:praxis@uj.ac.za" className="text-forest hover:underline">
-                      Website Manager
-                    </a>.
-                  </p>
-                </div>
-              )}
+          {!networkLoading && sortedNetworkPubs.length === 0 && (
+            <div className="bg-surface rounded-2xl border border-dashed border-border p-12 text-center max-w-xl mx-auto">
+              <BookOpen size={28} className="text-muted mx-auto mb-3" />
+              <p className="font-body text-sm text-muted mb-1 font-semibold text-ink">
+                Publications are being added
+              </p>
+              <p className="font-body text-xs text-muted">
+                Network researchers can submit publications via the{' '}
+                <a href="mailto:reclaimingpraxis@uj.ac.za" className="text-forest hover:underline">
+                  website manager
+                </a>.
+              </p>
+            </div>
+          )}
 
-              <div className="space-y-4">
-                {sortedNetworkPubs.map((pub: any) => (
-                  <NetworkPubCard key={pub.id} pub={pub} />
+          {sortedNetworkPubs.length > 0 && (
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+              {sortedNetworkPubs.map((pub: any) => (
+                <NetworkPubCard key={pub.id} pub={pub} />
+              ))}
+            </div>
+          )}
+        </div>
+      </section>
+
+      {/* ── GLOBAL FEED — secondary, clearly labelled ───────────── */}
+      <section className="section bg-surface border-t border-border">
+        <div className="container">
+          <div className="max-w-3xl">
+            <p className="eyebrow">Further reading</p>
+            <h2 className="section-heading">Research from the field</h2>
+            <p className="text-body text-muted mb-2">
+              A curated live feed of peer-reviewed research on reclaimers,
+              informal recycling, and waste picker rights — drawn from CrossRef.
+              This is external research, not produced by the network.
+            </p>
+            <p className="font-body text-xs text-muted/60 mb-8">
+              Results via{' '}
+              <a href="https://www.crossref.org" target="_blank" rel="noopener noreferrer"
+                className="hover:text-muted transition-colors">CrossRef</a>
+              {' '}· Filtered to reclaimer-specific topics
+            </p>
+
+            {/* Topic selector */}
+            <div className="mb-6">
+              <p className="font-body text-xs text-muted uppercase tracking-widest font-semibold mb-2">
+                Filter by topic
+              </p>
+              <div className="flex flex-wrap gap-2">
+                {SEARCH_QUERIES.map(q => (
+                  <button key={q} onClick={() => setActiveQuery(q)}
+                    className={`font-body text-xs px-4 py-1.5 rounded-full border transition-colors ${
+                      activeQuery === q
+                        ? 'bg-ink text-white border-ink'
+                        : 'border-border text-muted hover:border-ink hover:text-ink'
+                    }`}>
+                    {q}
+                  </button>
                 ))}
               </div>
-
-              {/* Submission note */}
-              {sortedNetworkPubs.length > 0 && (
-                <div className="mt-6 rounded-xl border border-dashed border-border p-5">
-                  <p className="font-body text-xs text-muted leading-relaxed">
-                    <span className="font-semibold text-ink">Network researchers: </span>
-                    to add a publication, contact the Website Manager or submit details to{' '}
-                    <a href="mailto:praxis@uj.ac.za" className="text-forest hover:underline">
-                      praxis@uj.ac.za
-                    </a>
-                  </p>
-                </div>
-              )}
+              <div className="flex items-center gap-3 mt-3">
+                <button onClick={() => loadGlobal(activeQuery)} disabled={loading}
+                  className="inline-flex items-center gap-1.5 font-body text-xs text-muted
+                             hover:text-forest transition-colors disabled:opacity-40">
+                  <RefreshCw size={12} className={loading ? 'animate-spin' : ''} />
+                  Refresh
+                </button>
+                {lastFetched && !loading && (
+                  <span className="font-body text-xs text-muted/60">
+                    Updated {lastFetched.toLocaleTimeString()}
+                  </span>
+                )}
+              </div>
             </div>
 
-            {/* ── ZONE 2: GLOBAL FEED (CrossRef live) ───────────────── */}
-            <div>
-              <div className="flex items-center gap-3 mb-6">
-                <div className="p-2 bg-surface rounded-lg border border-border">
-                  <Globe size={16} className="text-muted" />
-                </div>
-                <div>
-                  <h2 className="font-display font-bold text-ink text-h3">
-                    From the Field
-                  </h2>
-                  <p className="font-body text-xs text-muted">
-                    Live global research feed — updated in real time
+            {error && (
+              <div className="rounded-xl border border-red-100 bg-red-50 p-4 mb-4">
+                <p className="font-body text-xs text-red-700">{error}</p>
+              </div>
+            )}
+
+            <div className="space-y-3">
+              {loading
+                ? Array.from({ length: 4 }).map((_, i) => <Skeleton key={i} />)
+                : globalPubs.length > 0
+                ? globalPubs.map(pub => <GlobalPubCard key={pub.doi} pub={pub} />)
+                : !error && (
+                  <p className="font-body text-xs text-muted py-8 text-center">
+                    No results found for this topic.
                   </p>
-                </div>
-              </div>
-
-              {/* Topic selector */}
-              <div className="mb-5">
-                <p className="font-body text-xs text-muted uppercase tracking-widest font-semibold mb-2">
-                  Search topic
-                </p>
-                <div className="flex flex-wrap gap-2">
-                  {SEARCH_QUERIES.map(q => (
-                    <button key={q} onClick={() => setActiveQuery(q)}
-                      className={`font-body text-xs px-4 py-1.5 rounded-full border transition-colors ${
-                        activeQuery === q
-                          ? 'bg-ink text-white border-ink'
-                          : 'border-border text-muted hover:border-ink hover:text-ink'
-                      }`}>
-                      {q}
-                    </button>
-                  ))}
-                </div>
-
-                <div className="flex items-center gap-3 mt-3">
-                  <button onClick={() => loadGlobal(activeQuery)} disabled={loading}
-                    className="inline-flex items-center gap-1.5 font-body text-xs text-muted
-                               hover:text-forest transition-colors disabled:opacity-40">
-                    <RefreshCw size={12} className={loading ? 'animate-spin' : ''} />
-                    Refresh
-                  </button>
-                  {lastFetched && !loading && (
-                    <span className="font-body text-xs text-muted/60">
-                      Updated {lastFetched.toLocaleTimeString()}
-                    </span>
-                  )}
-                </div>
-              </div>
-
-              {error && (
-                <div className="rounded-xl border border-red-100 bg-red-50 p-4 mb-4">
-                  <p className="font-body text-xs text-red-700">{error}</p>
-                </div>
-              )}
-
-              <div className="space-y-3">
-                {loading
-                  ? Array.from({ length: 5 }).map((_, i) => <Skeleton key={i} />)
-                  : globalPubs.length > 0
-                  ? globalPubs.map(pub => <GlobalPubCard key={pub.doi} pub={pub} />)
-                  : !error && (
-                    <p className="font-body text-xs text-muted py-8 text-center">
-                      No results found for this topic.
-                    </p>
-                  )
-                }
-              </div>
-
-              {!loading && globalPubs.length > 0 && (
-                <div className="mt-4 p-4 bg-white rounded-xl border border-dashed border-border">
-                  <p className="font-body text-xs text-muted leading-relaxed">
-                    <span className="font-semibold text-ink">Seen a relevant paper? </span>
-                    The Website Manager can save any of these to the network's own library
-                    via the CMS Research section.
-                  </p>
-                </div>
-              )}
-
-              {!loading && globalPubs.length > 0 && (
-                <p className="font-body text-xs text-muted/50 mt-4 text-right">
-                  Results via{' '}
-                  <a href="https://www.crossref.org" target="_blank" rel="noopener noreferrer"
-                    className="hover:text-muted transition-colors">CrossRef</a>
-                  {' '}· Sorted by relevance
-                </p>
-              )}
+                )
+              }
             </div>
+
+            {!loading && globalPubs.length > 0 && (
+              <div className="mt-4 p-4 bg-white rounded-xl border border-dashed border-border">
+                <p className="font-body text-xs text-muted leading-relaxed">
+                  <span className="font-semibold text-ink">Seen a relevant paper? </span>
+                  The Website Manager can save any of these to the network's own library
+                  via the CMS Research section.
+                </p>
+              </div>
+            )}
           </div>
         </div>
       </section>
