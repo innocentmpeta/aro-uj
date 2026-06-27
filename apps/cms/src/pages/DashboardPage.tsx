@@ -12,6 +12,7 @@ const QUICK_LINKS = [
   { to: '/cms/work-packages',  label: 'Edit work packages',        description: 'Update WP titles and summaries on the home page',      priority: true },
   { to: '/cms/news/new',       label: 'Add a news item',           description: 'Publish a new update or event',                       priority: false },
   { to: '/cms/projects/new',   label: 'Add a project',             description: 'Document a new network project',                      priority: false },
+  { to: '/cms/faculties',      label: 'Manage faculties & depts', description: 'Add or edit departments available in project forms',     priority: false },
   { to: '/cms/stats',          label: 'Update homepage numbers',   description: 'Keep impact statistics current',                      priority: false },
 ]
 

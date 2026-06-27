@@ -6,7 +6,7 @@ import { useAuth } from '../../context/AuthContext'
 import {
   LayoutDashboard, Newspaper, Folder, BookOpen,
   FileText, Users, BarChart2, Settings,
-  LogOut, ChevronRight, Layers, Package, FileEdit
+  LogOut, ChevronRight, Layers, Package, FileEdit, Building2
 } from 'lucide-react'
 
 const NAV_ITEMS = [
@@ -16,6 +16,7 @@ const NAV_ITEMS = [
   { to: '/cms/news',           icon: Newspaper,       label: 'News & Updates',      end: false },
   { to: '/cms/projects',       icon: Folder,          label: 'Network Projects',    end: false },
   { to: '/cms/work-packages',  icon: Package,         label: 'Work Packages',       end: false },
+  { to: '/cms/faculties',      icon: Building2,       label: 'Faculties & Depts',   end: false },
   { to: '/cms/team',           icon: Users,           label: 'Team Members',        end: false },
   { to: '/cms/research',       icon: BookOpen,        label: 'Research',            end: false },
   { to: '/cms/resources',      icon: FileText,        label: 'Free Downloads',      end: false },

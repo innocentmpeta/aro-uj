@@ -133,11 +133,33 @@ export function ProjectFormPage() {
     imageBase64: null as string | null,
     thumbnailBase64: null as string | null, videoUrl: '',
     published: false, featured: false,
+    faculties: [] as string[],
   })
-  const [loading, setLoading] = useState(!isNew)
-  const [saving, setSaving] = useState(false)
-  const [toast, setToast] = useState<{ message: string; type: 'success' | 'error' } | null>(null)
-  const [errors, setErrors] = useState<Record<string, string>>({})
+  const [loading, setLoading]   = useState(!isNew)
+  const [saving, setSaving]     = useState(false)
+  const [toast, setToast]       = useState<{ message: string; type: 'success' | 'error' } | null>(null)
+  const [errors, setErrors]     = useState<Record<string, string>>({})
+  const [departments, setDepartments] = useState<{ id: string; name: string; faculty: string; acronym: string }[]>([])
+
+  // Load departments from Firestore for the faculty multi-select
+  useEffect(() => {
+    getCollection<any>('departments').then(data => {
+      setDepartments(data.sort((a: any, b: any) => {
+        if (a.faculty < b.faculty) return -1
+        if (a.faculty > b.faculty) return 1
+        return a.name.localeCompare(b.name)
+      }))
+    })
+  }, [])
+
+  function toggleFaculty(deptId: string) {
+    setForm(f => ({
+      ...f,
+      faculties: f.faculties.includes(deptId)
+        ? f.faculties.filter(x => x !== deptId)
+        : [...f.faculties, deptId],
+    }))
+  }
 
   useEffect(() => {
     if (!isNew && id) {
@@ -159,6 +181,7 @@ export function ProjectFormPage() {
             videoUrl: doc.videoId ? `https://youtube.com/watch?v=${doc.videoId}` : '',
             published: doc.published ?? false,
             featured: doc.featured ?? false,
+            faculties: doc.faculties ?? [],
           })
         }
         setLoading(false)
@@ -206,6 +229,7 @@ export function ProjectFormPage() {
         collaborators: form.collaborators.trim(),
         outputType: form.outputType,
         themes: form.themes,
+        faculties: form.faculties,
         imageBase64: form.mediaType === 'image' ? form.imageBase64 : null,
         thumbnailBase64: form.mediaType === 'video' ? form.thumbnailBase64 : null,
         videoId,
@@ -315,6 +339,48 @@ export function ProjectFormPage() {
               </button>
             ))}
           </div>
+        </Card>
+
+        {/* Faculties & Departments */}
+        <Card className="p-5">
+          <h2 className="font-body font-semibold text-sm text-ink border-b border-border pb-3 mb-4">
+            Faculties & departments involved
+          </h2>
+          {departments.length === 0 ? (
+            <p className="font-body text-xs text-muted">
+              No departments added yet.{' '}
+              <a href="/cms/faculties" className="text-forest hover:underline">
+                Add departments in Faculties & Depts →
+              </a>
+            </p>
+          ) : (
+            <div className="space-y-3">
+              {/* Group departments by faculty */}
+              {Array.from(new Set(departments.map(d => d.faculty))).map(faculty => (
+                <div key={faculty}>
+                  <p className="font-body text-[10px] font-semibold uppercase tracking-widest text-muted mb-1.5">
+                    {faculty}
+                  </p>
+                  <div className="flex flex-wrap gap-2">
+                    {departments.filter(d => d.faculty === faculty).map(dept => (
+                      <button
+                        key={dept.id}
+                        type="button"
+                        onClick={() => toggleFaculty(dept.id)}
+                        className={`font-body text-xs px-3 py-1.5 rounded-full border transition-colors ${
+                          form.faculties.includes(dept.id)
+                            ? 'bg-forest text-white border-forest'
+                            : 'border-border text-slate hover:border-forest hover:text-forest'
+                        }`}
+                      >
+                        {dept.acronym ? `${dept.name} (${dept.acronym})` : dept.name}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
         </Card>
 
         {/* Media */}

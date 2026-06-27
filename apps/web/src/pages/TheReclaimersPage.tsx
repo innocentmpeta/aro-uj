@@ -215,7 +215,6 @@ export default function TheReclaimersPage() {
                   In 2023, ARO established ARO Recycling, a recycling company owned by
                   reclaimers, through which ARO provides separation at source services
                   to middle- and high-income areas in Johannesburg.
-                </p>
                 <p>
                   ARO is named 'African' because it represents reclaimers of
                   all nationalities engaged in the recycling trade. It is run by

@@ -12,6 +12,7 @@ import { ResourcesListPage, ResourceFormPage } from './pages/ResourcesPage'
 import { StatsPage, SettingsPage } from './pages/StatsSettingsPage'
 import WorkPackagesPage from './pages/WorkPackagesPage'
 import PageContentPage from './pages/PageContentPage'
+import FacultiesPage from './pages/FacultiesPage'
 
 function ProtectedRoute({ children }: { children: React.ReactNode }) {
   const { user, loading } = useAuth()
@@ -69,6 +70,9 @@ export default function App() {
         {/* Resources */}
         <Route path="/cms/resources"      element={<Protected><ResourcesListPage /></Protected>} />
         <Route path="/cms/resources/:id"  element={<Protected><ResourceFormPage /></Protected>} />
+
+        {/* Faculties & Departments */}
+        <Route path="/cms/faculties"      element={<Protected><FacultiesPage /></Protected>} />
 
         {/* Page Content blocks */}
         <Route path="/cms/page-content"   element={<Protected><PageContentPage /></Protected>} />

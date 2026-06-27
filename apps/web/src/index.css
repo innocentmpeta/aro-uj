@@ -49,10 +49,10 @@
   /* ── Typography helpers ───────────────────────────────────── */
   .eyebrow {
     @apply font-body text-xs font-semibold tracking-[0.12em]
-           uppercase text-forest mb-3;
+           uppercase text-forest mb-4;
   }
   .section-heading {
-    @apply font-display text-h1 text-ink mb-5;
+    @apply font-display text-h1 text-ink mb-5 mt-1;
   }
   .section-lead {
     @apply text-lead text-muted max-w-prose;
