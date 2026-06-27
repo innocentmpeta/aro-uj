@@ -140,10 +140,11 @@ export default function WorkPackagesPage() {
                 {/* Actions */}
                 <div className="flex items-center gap-2 shrink-0">
                   {!isEditing && (
-                    <Btn variant="ghost" size="sm"
-                      onClick={e => { e.stopPropagation(); startEdit(def) }}>
-                      <Pencil size={13} /> Edit
-                    </Btn>
+                    <div onClick={e => e.stopPropagation()}>
+                      <Btn variant="ghost" size="sm" onClick={() => startEdit(def)}>
+                        <Pencil size={13} /> Edit
+                      </Btn>
+                    </div>
                   )}
                   <div className="text-slate/30">
                     {isExpanded ? <ChevronUp size={15} /> : <ChevronDown size={15} />}
