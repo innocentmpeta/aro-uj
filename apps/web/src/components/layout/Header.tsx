@@ -21,13 +21,12 @@ export default function Header() {
         <div className="flex items-center justify-between h-16">
 
           {/* Wordmark */}
-          <Link to="/" className="flex items-baseline gap-2 shrink-0">
-            <span className="font-display font-bold text-forest text-xl leading-none">
-              Reclaiming Praxis
-            </span>
-            <span className="font-body text-[10px] text-muted tracking-widest uppercase hidden sm:block">
-              Network
-            </span>
+          <Link to="/" className="flex items-center shrink-0">
+            <img
+              src="/logos/reclaim-logo.png"
+              alt="AROUJ Reclaiming Praxis Network"
+              className="h-10 w-auto"
+            />
           </Link>
 
           {/* Desktop nav — scrollable on medium screens */}
