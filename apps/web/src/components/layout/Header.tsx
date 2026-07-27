@@ -25,7 +25,7 @@ export default function Header() {
             <img
               src="/logos/reclaim-logo.png"
               alt="AROUJ Reclaiming Praxis Network"
-              className="h-10 w-auto"
+              className="h-[60px] w-auto"
             />
           </Link>
 

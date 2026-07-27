@@ -26,10 +26,10 @@ export default function Footer() {
             </p>
             <div className="flex items-center gap-4 mt-8">
               <img src="/logos/aro-logo.png" alt="ARO"
-                className="h-12 w-auto opacity-100 hover:opacity-80 transition-opacity" />
-              <div className="w-px h-6 bg-white/20" />
+                className="h-24 w-auto opacity-100 hover:opacity-80 transition-opacity" />
+              <div className="w-px h-12 bg-white/20" />
               <img src="/logos/uj-logo.png" alt="UJ"
-                className="h-12 w-auto opacity-100 hover:opacity-80 transition-opacity rounded" />
+                className="h-24 w-auto opacity-100 hover:opacity-80 transition-opacity rounded" />
             </div>
           </div>
 
