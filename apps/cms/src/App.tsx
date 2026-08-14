@@ -15,13 +15,25 @@ import PageContentPage from './pages/PageContentPage'
 import FacultiesPage from './pages/FacultiesPage'
 
 function ProtectedRoute({ children }: { children: React.ReactNode }) {
-  const { user, loading } = useAuth()
+  const { user, loading, isAdmin } = useAuth()
   if (loading) return (
     <div className="min-h-screen flex items-center justify-center bg-surface">
       <div className="font-body text-sm text-slate animate-pulse">Loading…</div>
     </div>
   )
-  return user ? <>{children}</> : <Navigate to="/cms/login" replace />
+  if (!user) return <Navigate to="/cms/login" replace />
+  if (!isAdmin) return (
+    <div className="min-h-screen flex items-center justify-center bg-surface px-4">
+      <div className="max-w-sm text-center">
+        <div className="font-body font-bold text-lg text-ink mb-2">Not authorised</div>
+        <p className="font-body text-sm text-slate">
+          Your account ({user.email}) does not have CMS access. Contact the network
+          coordinator if you believe this is a mistake.
+        </p>
+      </div>
+    </div>
+  )
+  return <>{children}</>
 }
 
 function PublicRoute({ children }: { children: React.ReactNode }) {

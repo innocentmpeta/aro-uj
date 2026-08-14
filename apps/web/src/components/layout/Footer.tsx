@@ -3,9 +3,10 @@ import { Link } from 'react-router-dom'
 const NAV_LINKS = [
   { label: 'About the Network',    to: '/about' },
   { label: 'The Reclaimers',       to: '/the-reclaimers' },
-  { label: 'Praxis in Action',     to: '/praxis-in-action' },
-  { label: 'Research & Publications', to: '/research' },
-  { label: 'Student Practicum',    to: '/student-practicum' },
+  { label: 'Projects',             to: '/praxis-in-action' },
+  { label: 'Approach',             to: '/approach' },
+  { label: 'Publications',         to: '/research' },
+  { label: 'Student research',     to: '/student-practicum' },
   { label: 'Teaching Resources',   to: '/teaching-resources' },
   { label: 'News & Updates',       to: '/news' },
   { label: 'Join the Network',     to: '/join' },
@@ -76,10 +77,17 @@ export default function Footer() {
           <p className="font-body text-xs text-white/25">
             © {new Date().getFullYear()} Reclaiming Praxis Network · Funded by UJ GES 4.0 SI
           </p>
-          <div className="flex items-center gap-6">
+          <div className="flex items-center gap-3">
             <p className="font-body text-xs text-white/25">
               Built by CODE — Centre of Design and Engineering
             </p>
+            <Link
+              to="/members"
+              className="font-body text-xs text-white/20 hover:text-white/60 transition-colors
+                         border border-white/10 hover:border-white/30 px-3 py-1 rounded-lg"
+            >
+              Member Login
+            </Link>
             <a
               href="https://cms.reclaimingpraxis.code7.co.za"
               className="font-body text-xs text-white/20 hover:text-white/60 transition-colors
