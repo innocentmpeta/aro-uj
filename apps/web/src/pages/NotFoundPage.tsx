@@ -12,7 +12,7 @@ export default function NotFoundPage() {
         </p>
         <div className="flex flex-wrap gap-4 justify-center">
           <Link to="/" className="btn-primary">Back to home <ArrowRight size={15} /></Link>
-          <Link to="/praxis-in-action" className="btn-outline">Praxis in Action</Link>
+          <Link to="/praxis-in-action" className="btn-outline">Projects</Link>
         </div>
       </div>
     </div>

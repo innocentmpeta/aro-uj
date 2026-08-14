@@ -1,5 +1,8 @@
+import { useState, FormEvent } from 'react'
+import { addDoc, collection, serverTimestamp } from 'firebase/firestore'
+import { db } from '@arouj/firebase-config'
 import PageHero from '../components/ui/PageHero'
-import { ArrowRight, ExternalLink } from 'lucide-react'
+import { ArrowRight, ExternalLink, CheckCircle2 } from 'lucide-react'
 import { Link } from 'react-router-dom'
 
 const PATHWAYS = [
@@ -38,6 +41,29 @@ const PATHWAYS = [
 ]
 
 export default function JoinPage() {
+  const [name, setName]         = useState('')
+  const [email, setEmail]       = useState('')
+  const [interest, setInterest] = useState('')
+  const [message, setMessage]   = useState('')
+  const [status, setStatus]     = useState<'idle' | 'submitting' | 'sent' | 'error'>('idle')
+
+  async function handleSubmit(e: FormEvent) {
+    e.preventDefault()
+    setStatus('submitting')
+    try {
+      await addDoc(collection(db, 'joinRequests'), {
+        name, email, interest, message,
+        createdAt: serverTimestamp(),
+        reviewed: false,
+      })
+      setStatus('sent')
+      setName(''); setEmail(''); setInterest(''); setMessage('')
+    } catch (err) {
+      console.error('Failed to submit join request:', err)
+      setStatus('error')
+    }
+  }
+
   return (
     <div className="bg-white">
 
@@ -89,60 +115,80 @@ export default function JoinPage() {
             coordinator will respond within five working days.
           </p>
 
-          <form
-            onSubmit={e => { e.preventDefault(); alert('Form submitted — connect this to your backend or Firestore.') }}
-            className="space-y-5"
-          >
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+          {status === 'sent' ? (
+            <div className="rounded-2xl border border-forest bg-greenlight p-8 flex items-start gap-4">
+              <CheckCircle2 size={22} className="text-forest shrink-0 mt-0.5" />
               <div>
-                <label className="font-body text-xs font-semibold text-muted uppercase tracking-wide block mb-1.5"
-                  htmlFor="name">Your name</label>
-                <input id="name" type="text" required placeholder="Full name"
-                  className="w-full border border-border rounded-xl px-4 py-3 font-body text-small
-                             focus:outline-none focus:ring-2 focus:ring-forest/30 focus:border-forest
-                             placeholder:text-muted/40 transition-colors" />
-              </div>
-              <div>
-                <label className="font-body text-xs font-semibold text-muted uppercase tracking-wide block mb-1.5"
-                  htmlFor="email">Email address</label>
-                <input id="email" type="email" required placeholder="you@example.com"
-                  className="w-full border border-border rounded-xl px-4 py-3 font-body text-small
-                             focus:outline-none focus:ring-2 focus:ring-forest/30 focus:border-forest
-                             placeholder:text-muted/40 transition-colors" />
+                <div className="font-display font-bold text-ink text-small mb-1">Message sent</div>
+                <p className="font-body text-small text-muted leading-relaxed">
+                  Thank you — a network coordinator will respond within five working days.
+                </p>
               </div>
             </div>
+          ) : (
+            <form onSubmit={handleSubmit} className="space-y-5">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                <div>
+                  <label className="font-body text-xs font-semibold text-muted uppercase tracking-wide block mb-1.5"
+                    htmlFor="name">Your name</label>
+                  <input id="name" type="text" required placeholder="Full name"
+                    value={name} onChange={e => setName(e.target.value)}
+                    className="w-full border border-border rounded-xl px-4 py-3 font-body text-small
+                               focus:outline-none focus:ring-2 focus:ring-forest/30 focus:border-forest
+                               placeholder:text-muted/40 transition-colors" />
+                </div>
+                <div>
+                  <label className="font-body text-xs font-semibold text-muted uppercase tracking-wide block mb-1.5"
+                    htmlFor="email">Email address</label>
+                  <input id="email" type="email" required placeholder="you@example.com"
+                    value={email} onChange={e => setEmail(e.target.value)}
+                    className="w-full border border-border rounded-xl px-4 py-3 font-body text-small
+                               focus:outline-none focus:ring-2 focus:ring-forest/30 focus:border-forest
+                               placeholder:text-muted/40 transition-colors" />
+                </div>
+              </div>
 
-            <div>
-              <label className="font-body text-xs font-semibold text-muted uppercase tracking-wide block mb-1.5"
-                htmlFor="interest">I am interested as a…</label>
-              <select id="interest"
-                className="w-full border border-border rounded-xl px-4 py-3 font-body text-small
-                           focus:outline-none focus:ring-2 focus:ring-forest/30 focus:border-forest
-                           bg-white text-ink transition-colors">
-                <option value="">Select one</option>
-                <option>UJ student</option>
-                <option>UJ faculty / researcher</option>
-                <option>International university partner</option>
-                <option>Reclaimers' organisation</option>
-                <option>Media / journalist</option>
-                <option>General enquiry</option>
-              </select>
-            </div>
+              <div>
+                <label className="font-body text-xs font-semibold text-muted uppercase tracking-wide block mb-1.5"
+                  htmlFor="interest">I am interested as a…</label>
+                <select id="interest"
+                  value={interest} onChange={e => setInterest(e.target.value)}
+                  className="w-full border border-border rounded-xl px-4 py-3 font-body text-small
+                             focus:outline-none focus:ring-2 focus:ring-forest/30 focus:border-forest
+                             bg-white text-ink transition-colors">
+                  <option value="">Select one</option>
+                  <option>UJ student</option>
+                  <option>UJ faculty / researcher</option>
+                  <option>International university partner</option>
+                  <option>Reclaimers' organisation</option>
+                  <option>Media / journalist</option>
+                  <option>General enquiry</option>
+                </select>
+              </div>
 
-            <div>
-              <label className="font-body text-xs font-semibold text-muted uppercase tracking-wide block mb-1.5"
-                htmlFor="message">Message</label>
-              <textarea id="message" rows={5} required
-                placeholder="Tell us about yourself and what draws you to the network…"
-                className="w-full border border-border rounded-xl px-4 py-3 font-body text-small
-                           focus:outline-none focus:ring-2 focus:ring-forest/30 focus:border-forest
-                           placeholder:text-muted/40 transition-colors resize-none" />
-            </div>
+              <div>
+                <label className="font-body text-xs font-semibold text-muted uppercase tracking-wide block mb-1.5"
+                  htmlFor="message">Message</label>
+                <textarea id="message" rows={5} required
+                  placeholder="Tell us about yourself and what draws you to the network…"
+                  value={message} onChange={e => setMessage(e.target.value)}
+                  className="w-full border border-border rounded-xl px-4 py-3 font-body text-small
+                             focus:outline-none focus:ring-2 focus:ring-forest/30 focus:border-forest
+                             placeholder:text-muted/40 transition-colors resize-none" />
+              </div>
 
-            <button type="submit" className="btn-join">
-              Send message <ArrowRight size={15} />
-            </button>
-          </form>
+              {status === 'error' && (
+                <p className="font-body text-small text-red-600">
+                  Something went wrong sending your message — please try again, or email{' '}
+                  <a href="mailto:reclaimingpraxis@uj.ac.za" className="underline">reclaimingpraxis@uj.ac.za</a> directly.
+                </p>
+              )}
+
+              <button type="submit" disabled={status === 'submitting'} className="btn-join disabled:opacity-60">
+                {status === 'submitting' ? 'Sending…' : <>Send message <ArrowRight size={15} /></>}
+              </button>
+            </form>
+          )}
         </div>
       </section>
 

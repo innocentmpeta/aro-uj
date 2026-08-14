@@ -28,7 +28,7 @@ export default function ProgrammeDetailPage() {
     return (
       <div className="container py-24 text-center">
         <p className="font-body text-muted mb-4">Programme not found.</p>
-        <Link to="/praxis-in-action" className="btn-outline">← Praxis in Action</Link>
+        <Link to="/praxis-in-action" className="btn-outline">← Projects</Link>
       </div>
     )
   }

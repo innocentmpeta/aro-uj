@@ -2,6 +2,7 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import { ArrowRight, MapPin, BookMarked, Link2, Shield, ChevronRight } from 'lucide-react'
 import PageHero from '../components/ui/PageHero'
+import SectionNav from '../components/ui/SectionNav'
 import StatCounter from '../components/ui/StatCounter'
 import VideoEmbed from '../components/ui/VideoEmbed'
 import SiteImage from '../components/ui/SiteImage'
@@ -82,6 +83,15 @@ export default function HomePage() {
         />
       )}
 
+      <SectionNav items={[
+        { id: 'about',            label: 'About' },
+        { id: 'work-packages',    label: 'Work packages' },
+        { id: 'featured-story',   label: 'Featured story' },
+        { id: 'recent-projects',  label: 'Recent projects' },
+        { id: 'news',             label: 'News' },
+        { id: 'join',             label: 'Join' },
+      ]} />
+
       {/* ── IMPACT STATS ─────────────────────────────────────────────── */}
       {show('home_stats') && (
         <section className="bg-white border-b border-border">
@@ -144,7 +154,7 @@ export default function HomePage() {
 
       {/* ── ABOUT INTRO ──────────────────────────────────────────────── */}
       {show('home_about') && (
-        <section className="section bg-white">
+        <section id="about" className="section bg-white scroll-mt-32">
           <div className="container">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
               <div>
@@ -187,7 +197,7 @@ export default function HomePage() {
 
       {/* ── WORK PACKAGES ────────────────────────────────────────────── */}
       {show('home_workpackages') && (
-        <section className="section bg-surface">
+        <section id="work-packages" className="section bg-surface scroll-mt-32">
           <div className="container">
             <p className="eyebrow">10 work packages</p>
             <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-10">
@@ -242,7 +252,7 @@ export default function HomePage() {
 
       {/* ── FEATURED STORY ───────────────────────────────────────────── */}
       {show('home_story') && !featuredLoading && featured && (
-        <section className="section bg-white">
+        <section id="featured-story" className="section bg-white scroll-mt-32">
           <div className="container">
             <p className="eyebrow">Featured story</p>
             <h2 className="section-heading mb-10">From the network</h2>
@@ -300,7 +310,7 @@ export default function HomePage() {
 
       {/* ── RECENT PROJECTS ──────────────────────────────────────────── */}
       {show('home_projects') && projects.length > 0 && (
-        <section className="section bg-white">
+        <section id="recent-projects" className="section bg-white scroll-mt-32">
           <div className="container">
             <div className="flex items-end justify-between mb-10">
               <div>
@@ -338,7 +348,7 @@ export default function HomePage() {
 
       {/* ── NEWS ─────────────────────────────────────────────────────── */}
       {show('home_news') && news.length > 0 && (
-        <section className="section bg-surface">
+        <section id="news" className="section bg-surface scroll-mt-32">
           <div className="container">
             <div className="flex items-end justify-between mb-10">
               <div>
@@ -373,7 +383,7 @@ export default function HomePage() {
 
       {/* ── JOIN CTA ─────────────────────────────────────────────────── */}
       {show('home_join') && (
-        <section className="section bg-white border-t border-border">
+        <section id="join" className="section bg-white border-t border-border scroll-mt-32">
           <div className="container">
             <div className="max-w-2xl mx-auto text-center">
               <p className="eyebrow">Grow the network</p>

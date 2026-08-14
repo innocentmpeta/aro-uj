@@ -187,7 +187,7 @@ export default function ResearchPage() {
         imagePath="/images/research/hero.jpg"
         imageAlt="Research and publications from the ARO-UJ Praxis Network"
         eyebrow="Knowledge from the network and the world"
-        title="Research & Publications"
+        title="Publications"
         lead="Publications from the ARO-UJ Praxis Network alongside a live feed of global research on reclaimers, informal recycling, and waste picker rights."
         variant="dark"
       />

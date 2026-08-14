@@ -1,6 +1,7 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 import PageHero from '../components/ui/PageHero'
+import SectionNav from '../components/ui/SectionNav'
 import { useSectionToggles, useCollection, usePageContent } from '../hooks/useFirestore'
 import { ArrowRight, ExternalLink, MapPin, BookMarked, Link2, Shield, Globe, Search, BookOpen, Building2, Users, Lightbulb, CheckCircle2 } from 'lucide-react'
 import { PILLARS, SDG_META, SDG } from '@arouj/types'
@@ -105,9 +106,18 @@ export default function AboutPage() {
         </div>
       </section>
 
+      <SectionNav items={[
+        { id: 'aim',        label: 'Aim & Impact' },
+        { id: 'pillars',    label: 'Five Pillars' },
+        { id: 'principles', label: 'Principles' },
+        { id: 'team',       label: 'Team' },
+        { id: 'sdgs',       label: 'SDGs' },
+        { id: 'funding',    label: 'Funding' },
+      ]} />
+
       {/* ── AIM & IMPACT ─────────────────────────────────────────── */}
       {show('about_aim') && (
-        <section className="section-sm bg-forest">
+        <section id="aim" className="section-sm bg-forest scroll-mt-32">
           <div className="container">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
               <div>
@@ -134,40 +144,9 @@ export default function AboutPage() {
         </section>
       )}
 
-      {/* ── GES 4.0 SI SECTION ───────────────────────────────────── */}
-      {show('about_ges') && (
-        <section className="section-sm bg-surface border-b border-border">
-          <div className="container">
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-10 items-start">
-              <div className="lg:col-span-2">
-                <p className="eyebrow">Funding & programme</p>
-                <h2 className="section-heading">GES 4.0 Societal Impact Initiative</h2>
-                <p className="text-body text-muted leading-relaxed">{txt('ges_body')}</p>
-              </div>
-              <div className="rounded-2xl border border-border bg-white p-6 space-y-3">
-                <div className="font-body text-xs font-semibold tracking-widest uppercase text-forest mb-4">
-                  Programme details
-                </div>
-                {[
-                  ['Funder',     'University of Johannesburg GES 4.0 SI'],
-                  ['Duration',   'Aug 2024 – Jul 2027 (funded phase)'],
-                  ['Co-funding', 'R430,000+ secured / committed'],
-                  ['Faculties',  '7 UJ faculties participating'],
-                ].map(([label, value]) => (
-                  <div key={label} className="flex gap-3 text-sm">
-                    <span className="font-body font-semibold text-ink w-24 shrink-0">{label}</span>
-                    <span className="font-body text-muted leading-snug">{value}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-        </section>
-      )}
-
       {/* ── FIVE PILLARS ─────────────────────────────────────────── */}
       {show('about_pillars') && (
-        <section className="section bg-white">
+        <section id="pillars" className="section bg-white scroll-mt-32">
           <div className="container">
             <p className="eyebrow">How the network works</p>
             <h2 className="section-heading">Five mutually reinforcing pillars</h2>
@@ -210,73 +189,9 @@ export default function AboutPage() {
         </section>
       )}
 
-      {/* ── SDGs ─────────────────────────────────────────────────── */}
-      {show('about_sdgs') && (
-        <section className="section bg-white">
-          <div className="container">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
-              <div>
-                <p className="eyebrow">Global development alignment</p>
-                <h2 className="section-heading">Contributing to 10 UN Sustainable Development Goals</h2>
-                <p className="text-body text-muted mb-6">
-                  The network's work directly contributes to ten of the United
-                  Nations Sustainable Development Goals. Reclaimers sit at the
-                  intersection of poverty, health, gender, decent work, innovation,
-                  reduced inequality, sustainable cities, responsible consumption,
-                  climate action, and partnerships.
-                </p>
-                <a href="https://sdgs.un.org/goals" target="_blank" rel="noopener noreferrer"
-                  className="font-body text-small text-forest hover:underline inline-flex items-center gap-1">
-                  Learn about the UN SDGs ↗
-                </a>
-              </div>
-              <div>
-                <div className="grid grid-cols-5 gap-3">
-                  {NETWORK_SDGS.map(sdg => {
-                    const meta = SDG_META[sdg]
-                    return (
-                      <div key={sdg} className="group relative flex flex-col items-center" title={`SDG ${sdg}: ${meta.label}`}>
-                        <div className="relative w-full aspect-square rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-shadow">
-                          <img src={`/images/about/sdg${sdg}.png`} alt={`SDG ${sdg}: ${meta.label}`}
-                            className="w-full h-full object-cover"
-                            onError={e => {
-                              const img = e.currentTarget as HTMLImageElement
-                              img.style.display = 'none'
-                              const parent = img.parentElement
-                              if (parent && !parent.querySelector('.sdg-fallback')) {
-                                const fb = document.createElement('div')
-                                fb.className = 'sdg-fallback absolute inset-0 flex flex-col items-center justify-center p-1'
-                                fb.style.backgroundColor = meta.color
-                                fb.innerHTML = `<span style="color:white;font-weight:bold;font-size:1.1rem;font-family:Georgia,serif">${sdg}</span>`
-                                parent.appendChild(fb)
-                              }
-                            }}
-                          />
-                        </div>
-                        <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 z-10
-                                        bg-ink text-white text-[10px] font-body px-2 py-1 rounded-lg
-                                        whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none shadow-lg">
-                          SDG {sdg}: {meta.label}
-                        </div>
-                      </div>
-                    )
-                  })}
-                </div>
-                <div className="mt-6 pt-5 border-t border-border flex items-center gap-3">
-                  <div className="font-display font-bold text-forest text-h2">10</div>
-                  <div className="font-body text-small text-muted leading-snug">
-                    Sustainable Development Goals<br />addressed by the network
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-      )}
-
       {/* ── PRINCIPLES ───────────────────────────────────────────── */}
       {show('about_principles') && (
-        <section className="section bg-white">
+        <section id="principles" className="section bg-white scroll-mt-32">
           <div className="container max-w-3xl">
             <p className="eyebrow">How we engage</p>
             <h2 className="section-heading">Principles for every project</h2>
@@ -310,7 +225,7 @@ export default function AboutPage() {
 
       {/* ── TEAM ─────────────────────────────────────────────────── */}
       {show('about_team') && (
-        <section className="section bg-surface">
+        <section id="team" className="section bg-surface scroll-mt-32">
           <div className="container">
             <p className="eyebrow">The people</p>
             <h2 className="section-heading">Network team</h2>
@@ -421,6 +336,101 @@ export default function AboutPage() {
         </section>
       )}
 
+      {/* ── SDGs ─────────────────────────────────────────────────── */}
+      {show('about_sdgs') && (
+        <section id="sdgs" className="section bg-white scroll-mt-32">
+          <div className="container">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
+              <div>
+                <p className="eyebrow">Global development alignment</p>
+                <h2 className="section-heading">Contributing to 10 UN Sustainable Development Goals</h2>
+                <p className="text-body text-muted mb-6">
+                  The network's work directly contributes to ten of the United
+                  Nations Sustainable Development Goals. Reclaimers sit at the
+                  intersection of poverty, health, gender, decent work, innovation,
+                  reduced inequality, sustainable cities, responsible consumption,
+                  climate action, and partnerships.
+                </p>
+                <a href="https://sdgs.un.org/goals" target="_blank" rel="noopener noreferrer"
+                  className="font-body text-small text-forest hover:underline inline-flex items-center gap-1">
+                  Learn about the UN SDGs ↗
+                </a>
+              </div>
+              <div>
+                <div className="grid grid-cols-5 gap-3">
+                  {NETWORK_SDGS.map(sdg => {
+                    const meta = SDG_META[sdg]
+                    return (
+                      <div key={sdg} className="group relative flex flex-col items-center" title={`SDG ${sdg}: ${meta.label}`}>
+                        <div className="relative w-full aspect-square rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-shadow">
+                          <img src={`/images/about/sdg${sdg}.png`} alt={`SDG ${sdg}: ${meta.label}`}
+                            className="w-full h-full object-cover"
+                            onError={e => {
+                              const img = e.currentTarget as HTMLImageElement
+                              img.style.display = 'none'
+                              const parent = img.parentElement
+                              if (parent && !parent.querySelector('.sdg-fallback')) {
+                                const fb = document.createElement('div')
+                                fb.className = 'sdg-fallback absolute inset-0 flex flex-col items-center justify-center p-1'
+                                fb.style.backgroundColor = meta.color
+                                fb.innerHTML = `<span style="color:white;font-weight:bold;font-size:1.1rem;font-family:Georgia,serif">${sdg}</span>`
+                                parent.appendChild(fb)
+                              }
+                            }}
+                          />
+                        </div>
+                        <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 z-10
+                                        bg-ink text-white text-[10px] font-body px-2 py-1 rounded-lg
+                                        whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none shadow-lg">
+                          SDG {sdg}: {meta.label}
+                        </div>
+                      </div>
+                    )
+                  })}
+                </div>
+                <div className="mt-6 pt-5 border-t border-border flex items-center gap-3">
+                  <div className="font-display font-bold text-forest text-h2">10</div>
+                  <div className="font-body text-small text-muted leading-snug">
+                    Sustainable Development Goals<br />addressed by the network
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* ── GES 4.0 SI SECTION ───────────────────────────────────── */}
+      {show('about_ges') && (
+        <section id="funding" className="section-sm bg-surface scroll-mt-32">
+          <div className="container">
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-10 items-start">
+              <div className="lg:col-span-2">
+                <p className="eyebrow">Funding & programme</p>
+                <h2 className="section-heading">GES 4.0 Societal Impact Initiative</h2>
+                <p className="text-body text-muted leading-relaxed">{txt('ges_body')}</p>
+              </div>
+              <div className="rounded-2xl border border-border bg-white p-6 space-y-3">
+                <div className="font-body text-xs font-semibold tracking-widest uppercase text-forest mb-4">
+                  Programme details
+                </div>
+                {[
+                  ['Funder',     'University of Johannesburg GES 4.0 SI'],
+                  ['Duration',   'Aug 2024 – Jul 2027 (funded phase)'],
+                  ['Co-funding', 'R430,000+ secured / committed'],
+                  ['Faculties',  '7 UJ faculties participating'],
+                ].map(([label, value]) => (
+                  <div key={label} className="flex gap-3 text-sm">
+                    <span className="font-body font-semibold text-ink w-24 shrink-0">{label}</span>
+                    <span className="font-body text-muted leading-snug">{value}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </section>
+      )}
+
       {/* ── CTA ──────────────────────────────────────────────────── */}
       <section className="section bg-white border-t border-border">
         <div className="container text-center max-w-xl">
@@ -432,7 +442,7 @@ export default function AboutPage() {
           </p>
           <div className="flex flex-wrap gap-4 justify-center">
             <Link to="/join" className="btn-join">Join the Network <ArrowRight size={15} /></Link>
-            <Link to="/praxis-in-action" className="btn-outline">Praxis in Action</Link>
+            <Link to="/praxis-in-action" className="btn-outline">Projects</Link>
           </div>
         </div>
       </section>

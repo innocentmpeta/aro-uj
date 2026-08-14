@@ -28,7 +28,7 @@ export default function ProjectDetailPage() {
     return (
       <div className="container py-24 text-center">
         <p className="font-body text-muted mb-4">Project not found.</p>
-        <Link to="/praxis-in-action" className="btn-outline">← Back to Praxis in Action</Link>
+        <Link to="/praxis-in-action" className="btn-outline">← Back to Projects</Link>
       </div>
     )
   }
@@ -47,7 +47,7 @@ export default function ProjectDetailPage() {
           <Link to="/praxis-in-action"
             className="inline-flex items-center gap-2 font-body text-small text-muted
                        hover:text-forest transition-colors">
-            <ArrowLeft size={14} /> Praxis in Action
+            <ArrowLeft size={14} /> Projects
           </Link>
         </div>
       </div>

@@ -1,6 +1,7 @@
 import { useSectionToggles } from '../hooks/useFirestore'
 import React from 'react'
 import PageHero from '../components/ui/PageHero'
+import SectionNav from '../components/ui/SectionNav'
 import { ExternalLink, ArrowRight, ShoppingCart, Sliders, Tag, RefreshCw, MapPin, CreditCard, FileText, Globe } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import SiteImage from '../components/ui/SiteImage'
@@ -48,8 +49,15 @@ export default function TheReclaimersPage() {
         variant="dark"
       />
 
+      <SectionNav items={[
+        { id: 'understanding',  label: 'Understanding reclaimers' },
+        { id: 'what-they-do',   label: 'What they do' },
+        { id: 'challenges',     label: 'Challenges' },
+        { id: 'aro',            label: 'About ARO' },
+      ]} />
+
       {/* ── WHO ARE RECLAIMERS ─────────────────────────────────────────── */}
-      <section className="section bg-white">
+      <section id="understanding" className="section bg-white scroll-mt-32">
         <div className="container">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
             <div>
@@ -111,7 +119,7 @@ export default function TheReclaimersPage() {
 
       {/* ── WHAT RECLAIMERS DO ─────────────────────────────────────────── */}
       {sections.reclaimers_what !== false && (
-      <section className="section bg-surface">
+      <section id="what-they-do" className="section bg-surface scroll-mt-32">
         <div className="container">
           <p className="eyebrow">The work</p>
           <h2 className="section-heading">What reclaimers do — and why it matters</h2>
@@ -137,7 +145,7 @@ export default function TheReclaimersPage() {
 
       {/* ── PHOTO + CHALLENGES SPLIT ───────────────────────────────────── */}
       {sections.reclaimers_challenges !== false && (
-      <section className="section bg-white">
+      <section id="challenges" className="section bg-white scroll-mt-32">
         <div className="container">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
             <SiteImage
@@ -193,7 +201,7 @@ export default function TheReclaimersPage() {
 
       {/* ── ARO SECTION ───────────────────────────────────────────────── */}
       {sections.reclaimers_aro !== false && (
-      <section className="section bg-white">
+      <section id="aro" className="section bg-white scroll-mt-32">
         <div className="container">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
             <div>
@@ -315,10 +323,10 @@ export default function TheReclaimersPage() {
           </p>
           <div className="flex flex-wrap gap-4 justify-center">
             <Link to="/praxis-in-action" className="btn-primary">
-              See Praxis in Action <ArrowRight size={15} />
+              See Projects <ArrowRight size={15} />
             </Link>
             <Link to="/student-practicum" className="btn-outline">
-              Student Practicum
+              Student research
             </Link>
           </div>
         </div>

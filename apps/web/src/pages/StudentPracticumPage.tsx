@@ -1,17 +1,16 @@
 import { useSectionToggles, useCollection, usePageContent } from '../hooks/useFirestore'
 import React from 'react'
 import PageHero from '../components/ui/PageHero'
+import SectionNav from '../components/ui/SectionNav'
 import { Link } from 'react-router-dom'
 import { ArrowRight, ShieldCheck, Users, Link2, Ban } from 'lucide-react'
 import SiteImage from '../components/ui/SiteImage'
 import ThemeBadge from '../components/ui/ThemeBadge'
 
-const HOW_IT_WORKS = [
-  { step: '01', heading: 'Apply',      body: 'Students from any UJ faculty apply at the start of each semester. No prior experience with reclaimers or waste management is required — curiosity and commitment are.' },
-  { step: '02', heading: 'Orient',     body: 'All participants complete an orientation that covers ARO\'s history and campaigns, reclaimer working conditions, ethical research principles, and the network\'s participatory methodology.' },
-  { step: '03', heading: 'Work',       body: 'Students are placed in a project team that includes ARO members. They work together on a real challenge — in the field, not from a desk.' },
-  { step: '04', heading: 'Reflect',    body: 'Regular reflection sessions, supervised by a UJ faculty member and an ARO representative, ensure that learning is extracted from experience — and that both partners grow.' },
-  { step: '05', heading: 'Contribute', body: 'Outputs are co-owned by the network. Research papers, design solutions, training materials, and legal documents all remain accessible to ARO and the wider reclaimer community.' },
+const HOW_TO_PARTICIPATE = [
+  { step: '01', heading: 'Independent research project', body: '[Placeholder — to be replaced by Shillah and Melanie] Do your independent post-graduate research project on reclaimers in partnership with ARO.' },
+  { step: '02', heading: 'Course assignment',             body: '[Placeholder — to be replaced by Shillah and Melanie] Work with ARO for an assignment as part of a participating course. Examples of FADA courses that have taken part will be listed here.' },
+  { step: '03', heading: 'Volunteer',                     body: '[Placeholder — to be replaced by Shillah and Melanie] Volunteer to support the network and ARO.' },
 ]
 
 const DEFAULT_FACULTIES = [
@@ -51,17 +50,24 @@ export default function StudentPracticumPage() {
         imagePath="/images/practicum/hero.jpg"
         imageAlt="UJ student and reclaimer working together in the field"
         eyebrow="For UJ students & researchers"
-        title="Student Practicum"
+        title="Student research"
         lead="Apply your expertise alongside ARO members on real challenges — and learn from the community as much as from the classroom."
         variant="dark"
       />
 
+      <SectionNav items={[
+        { id: 'past-projects', label: 'Past projects' },
+        { id: 'principles',    label: 'Principles' },
+        { id: 'participate',   label: 'How to participate' },
+        { id: 'who-can-apply', label: 'Who can apply' },
+      ]} />
+
       {/* ── PAST HIGHLIGHTS — first per Melanie's note ─────────── */}
       {show('practicum_past') && PAST_HIGHLIGHTS.length > 0 && (
-        <section className="section bg-white">
+        <section id="past-projects" className="section bg-white scroll-mt-32">
           <div className="container">
             <p className="eyebrow">What students have built</p>
-            <h2 className="section-heading">Past practicum projects</h2>
+            <h2 className="section-heading">Past student research projects</h2>
             <p className="text-body text-muted max-w-2xl mb-10">
               Every project below was produced by UJ students working directly
               alongside ARO members — not desk research, but applied work in the
@@ -103,10 +109,10 @@ export default function StudentPracticumPage() {
 
       {/* ── ETHICAL FRAMEWORK ────────────────────────────────────── */}
       {show('practicum_ethics') && (
-        <section className="section bg-surface">
+        <section id="principles" className="section bg-surface scroll-mt-32">
           <div className="container max-w-3xl">
-            <p className="eyebrow">Ethical principles</p>
-            <h2 className="section-heading">How we work responsibly</h2>
+            <p className="eyebrow">How we work</p>
+            <h2 className="section-heading">Principles for Student Projects</h2>
             <div className="space-y-5 text-body text-muted mt-2 mb-8">
               <p>
                 Participatory action research with marginalised communities
@@ -135,14 +141,17 @@ export default function StudentPracticumPage() {
         </section>
       )}
 
-      {/* ── HOW IT WORKS ─────────────────────────────────────────── */}
+      {/* ── HOW CAN STUDENTS PARTICIPATE ─────────────────────────── */}
       {show('practicum_how') && (
-        <section className="section bg-white">
+        <section id="participate" className="section bg-white scroll-mt-32">
           <div className="container">
             <p className="eyebrow">The process</p>
-            <h2 className="section-heading">How the practicum works</h2>
+            <h2 className="section-heading">How can students participate?</h2>
+            <p className="text-body text-muted max-w-2xl mb-2">
+              There are three ways students can participate in the ARO-UJ Reclaiming Praxis Network:
+            </p>
             <div className="mt-10 space-y-3">
-              {HOW_IT_WORKS.map(({ step, heading, body }) => (
+              {HOW_TO_PARTICIPATE.map(({ step, heading, body }) => (
                 <div key={step} className="flex items-start gap-8 p-7 bg-white border border-border rounded-2xl">
                   <div className="font-body text-xs font-semibold text-forest/40 tracking-widest shrink-0 pt-0.5 w-6">{step}</div>
                   <div>
@@ -158,7 +167,7 @@ export default function StudentPracticumPage() {
 
       {/* ── WHO CAN APPLY — lower on page per Melanie ─────────────── */}
       {show('practicum_who') && (
-        <section className="section-sm bg-surface">
+        <section id="who-can-apply" className="section-sm bg-surface scroll-mt-32">
           <div className="container">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
               <div>

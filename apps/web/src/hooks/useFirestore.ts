@@ -120,6 +120,11 @@ export function useProjectsByProgramme(programmeId: string) {
 }
 
 // ── Work packages ──────────────────────────────────────────────────────────
+export interface WorkPackageDocument {
+  label: string
+  url: string
+}
+
 export interface WorkPackage {
   id: string          // wp1 … wp10
   code: string        // 'WP1'
@@ -130,6 +135,9 @@ export interface WorkPackage {
   startDate: string
   endDate: string
   published: boolean
+  photos?: string[]                  // image paths — shown as a gallery
+  documents?: WorkPackageDocument[]   // linked/downloadable docs
+  videoId?: string                   // YouTube video ID
 }
 
 export function useWorkPackages() {

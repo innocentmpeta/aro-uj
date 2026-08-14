@@ -5,9 +5,10 @@ import { Menu, X } from 'lucide-react'
 const NAV = [
   { to: '/about',              label: 'About' },
   { to: '/the-reclaimers',     label: 'Reclaimers' },
-  { to: '/praxis-in-action',   label: 'Praxis in Action' },
-  { to: '/research',           label: 'Research' },
-  { to: '/student-practicum',  label: 'Student Practicum' },
+  { to: '/praxis-in-action',   label: 'Projects' },
+  { to: '/approach',           label: 'Approach' },
+  { to: '/research',           label: 'Publications' },
+  { to: '/student-practicum',  label: 'Student research' },
   { to: '/teaching-resources', label: 'Resources' },
   { to: '/news',               label: 'News' },
 ]
@@ -50,15 +51,12 @@ export default function Header() {
 
           <div className="flex items-center gap-3 shrink-0">
             {/* Partner logos — only on very wide screens */}
-            
-            {/*
-              <div className="hidden xl:flex items-center gap-3 pr-4 border-r border-border">
+            <div className="hidden xl:flex items-center gap-3 pr-4 border-r border-border">
               <img src="/logos/aro-logo.png" alt="ARO"
                 className="h-7 w-auto opacity-60 hover:opacity-100 transition-opacity" />
               <img src="/logos/uj-logo.png"  alt="UJ"
                 className="h-7 w-auto opacity-60 hover:opacity-100 transition-opacity rounded" />
             </div>
-            */}
             <Link to="/join" className="btn-join hidden sm:inline-flex py-2 px-4 text-xs">
               Join the Network
             </Link>
