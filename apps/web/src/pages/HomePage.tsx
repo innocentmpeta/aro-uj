@@ -9,8 +9,23 @@ import SiteImage from '../components/ui/SiteImage'
 import ThemeBadge from '../components/ui/ThemeBadge'
 import {
   useCollection, useImpactStats, useFeaturedProject,
-  useSectionToggles, useWorkPackages,
+  useSectionToggles, useWorkPackages, usePageContent,
 } from '../hooks/useFirestore'
+
+// Default text blocks — Firestore siteConfig/homePage values override these when set
+const DEFAULTS: Record<string, string> = {
+  hero_title: 'Where reclaimer knowledge and academic expertise build change together.',
+  hero_lead: 'A partnership between the African Reclaimers Organisation (ARO) and the University of Johannesburg (UJ) — working where theory meets the street.',
+  about_heading: 'A network built on equal partnership.',
+  about_lead: 'The ARO-UJ Network brings together the African Reclaimers Organisation and the University of Johannesburg — not a research project on reclaimers, but a collaboration with them.',
+  about_body: 'The word praxis describes the cycle of reflection and action. Knowledge is applied in the real world. Learning comes back from that application. Both partners are changed by the encounter.',
+  quote_text: 'Before, in December you could not breathe inside. Now my children ask me to take them to see where I work — they are proud of it.',
+  quote_cite: 'Mantoa K., ARO member, Selby sorting depot',
+}
+
+function useTxt(content: Record<string, string> | null, key: string): string {
+  return (content && content[key]) ? content[key] : DEFAULTS[key] ?? ''
+}
 
 // ── Hardcoded WP fallback data (shown until Shillah edits via CMS) ─────────
 const WP_DEFAULTS = [
@@ -53,6 +68,9 @@ export default function HomePage() {
   const { data: projects }       = useCollection<any>('projects', { publishedOnly: true })
   const { data: news }           = useCollection<any>('news',     { publishedOnly: true })
   const { data: wpFromFirestore } = useWorkPackages()
+  const { data: pageContent }    = usePageContent('homePage')
+
+  const txt = (key: string) => useTxt(pageContent, key)
 
   const stats = statsData ?? {
     yearFounded: 2022, facultiesInvolved: 7, projectsCompleted: 24,
@@ -74,10 +92,11 @@ export default function HomePage() {
       {show('home_hero') && (
         <PageHero
           imagePath="/images/hero/hero.jpg"
+          imageUrl={pageContent?.heroImage}
           imageAlt="Reclaimers and academics working together"
           eyebrow="ARO-UJ Reclaiming Praxis Network · Est. 2022"
-          title="Where reclaimer knowledge and academic expertise build change together."
-          lead="A partnership between the African Reclaimers Organisation (ARO) and the University of Johannesburg (UJ) — working where theory meets the street."
+          title={txt('hero_title')}
+          lead={txt('hero_lead')}
           variant="dark"
           minHeight="88vh"
         />
@@ -159,17 +178,9 @@ export default function HomePage() {
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
               <div>
                 <p className="eyebrow">About the network</p>
-                <h2 className="section-heading">A network built on equal partnership.</h2>
-                <p className="section-lead mb-6">
-                  The ARO-UJ Network brings together the African Reclaimers Organisation
-                  and the University of Johannesburg — not a research project on
-                  reclaimers, but a collaboration <em>with</em> them.
-                </p>
-                <p className="text-body text-muted mb-8">
-                  The word <em>praxis</em> describes the cycle of reflection and action.
-                  Knowledge is applied in the real world. Learning comes back from
-                  that application. Both partners are changed by the encounter.
-                </p>
+                <h2 className="section-heading">{txt('about_heading')}</h2>
+                <p className="section-lead mb-6">{txt('about_lead')}</p>
+                <p className="text-body text-muted mb-8">{txt('about_body')}</p>
                 <Link to="/about" className="btn-outline">
                   About the network <ArrowRight size={15} />
                 </Link>
@@ -297,11 +308,10 @@ export default function HomePage() {
             <blockquote>
               <p className="font-display font-light text-white italic mb-6"
                  style={{ fontSize: 'clamp(1.3rem, 2.5vw, 1.9rem)', lineHeight: 1.5 }}>
-                "Before, in December you could not breathe inside. Now my children
-                ask me to take them to see where I work — they are proud of it."
+                "{txt('quote_text')}"
               </p>
               <cite className="font-body text-small text-white/60 not-italic">
-                Mantoa K., ARO member, Selby sorting depot
+                {txt('quote_cite')}
               </cite>
             </blockquote>
           </div>

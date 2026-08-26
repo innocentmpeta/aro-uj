@@ -30,6 +30,8 @@ const NETWORK_SDGS: SDG[] = [1, 3, 5, 8, 9, 10, 11, 12, 13, 17]
 
 // Default text blocks — Firestore values override these when set
 const DEFAULTS: Record<string, string> = {
+  hero_title: 'A partnership built on equal footing.',
+  hero_lead: 'The ARO-UJ Reclaiming Praxis Network — where reclaimer knowledge leads academic expertise.',
   intro_p1: 'The ARO-UJ Reclaiming Praxis Network is a collaboration between the African Reclaimers Organisation (ARO) and seven faculties at the University of Johannesburg (UJ), active since 2022 and funded by UJ\'s GES 4.0 SI programme.',
   intro_p2: 'The network aims to advance economic, social, and environmental justice for reclaimers — strengthening ARO\'s capacity to fight for recognition and rights, while building a model for genuine university–civil society collaboration that can be replicated across South Africa and the continent.',
   intro_p3: 'Since 2021, participating academics have raised over R2 million in external funding and received R75,000 in teaching innovation funds. Co-funding of over R430,000 has been secured or committed for the current funded programme.',
@@ -44,7 +46,10 @@ function useTxt(content: Record<string, string> | null, key: string): string {
 export default function AboutPage() {
   const { sections } = useSectionToggles()
   const { data: teamFromDB } = useCollection<any>('team', { publishedOnly: true })
+  const { data: partners } = useCollection<any>('partners', { publishedOnly: true })
   const { data: pageContent } = usePageContent('aboutPage')
+
+  const sortedPartners = [...partners].sort((a: any, b: any) => (a.order ?? 0) - (b.order ?? 0))
 
   const txt = (key: string) => useTxt(pageContent, key)
   const show = (key: string) => sections[key] !== false
@@ -64,10 +69,11 @@ export default function AboutPage() {
       {/* ── HERO ─────────────────────────────────────────────────── */}
       <PageHero
         imagePath="/images/about/hero.jpg"
+        imageUrl={pageContent?.heroImage}
         imageAlt="ARO and UJ network members working together"
         eyebrow="About the network"
-        title="A partnership built on equal footing."
-        lead="The ARO-UJ Reclaiming Praxis Network — where reclaimer knowledge leads academic expertise."
+        title={txt('hero_title')}
+        lead={txt('hero_lead')}
         variant="split"
       />
 
@@ -306,29 +312,26 @@ export default function AboutPage() {
       )}
 
       {/* ── PARTNERS — hidden by default via toggle ───────────────── */}
-      {show('about_partners') && (
+      {show('about_partners') && partners.length > 0 && (
         <section className="section bg-surface">
           <div className="container">
             <p className="eyebrow">Partners & funders</p>
             <h2 className="section-heading">Who we work with</h2>
-            <p className="text-body text-muted mb-8 max-w-2xl">
-              Note: this section can be turned off in the CMS Page Sections panel if the list needs review.
-            </p>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mt-4">
-              {[
-                { name: 'African Reclaimers Organisation', url: 'https://africanreclaimers.org', type: 'Lead partner — co-director of the network' },
-                { name: 'University of Johannesburg',      url: 'https://www.uj.ac.za',         type: 'Lead partner — 7 participating faculties' },
-                { name: 'SERI',                            url: 'https://seri-sa.org',          type: 'Research & legal partner' },
-                { name: 'DFFE',                            url: '#',                             type: 'National policy partner' },
-              ].map(({ name, url, type }) => (
-                <a key={name} href={url}
-                  target={url !== '#' ? '_blank' : undefined} rel="noopener noreferrer"
-                  className={`group flex flex-col justify-between p-5 rounded-2xl border hover:border-forest transition-colors bg-white ${url === '#' ? 'cursor-default' : 'cursor-pointer'}`}>
-                  <div>
-                    <div className="font-body font-semibold text-small text-ink mb-1 group-hover:text-forest transition-colors">{name}</div>
-                    <div className="font-body text-xs text-muted">{type}</div>
+              {sortedPartners.map((partner: any) => (
+                <a key={partner.id} href={partner.url || '#'}
+                  target={partner.url ? '_blank' : undefined} rel="noopener noreferrer"
+                  className={`group flex flex-col justify-between p-5 rounded-2xl border hover:border-forest transition-colors bg-white ${!partner.url ? 'cursor-default' : 'cursor-pointer'}`}>
+                  <div className="flex items-start gap-3">
+                    {partner.logoUrl && (
+                      <img src={partner.logoUrl} alt="" className="w-8 h-8 rounded object-contain shrink-0" />
+                    )}
+                    <div>
+                      <div className="font-body font-semibold text-small text-ink mb-1 group-hover:text-forest transition-colors">{partner.name}</div>
+                      <div className="font-body text-xs text-muted">{partner.type}</div>
+                    </div>
                   </div>
-                  {url !== '#' && <ExternalLink size={13} className="text-muted group-hover:text-forest transition-colors mt-3 self-end" />}
+                  {partner.url && <ExternalLink size={13} className="text-muted group-hover:text-forest transition-colors mt-3 self-end" />}
                 </a>
               ))}
             </div>

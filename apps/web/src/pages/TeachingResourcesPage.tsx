@@ -1,7 +1,19 @@
 import PageHero from '../components/ui/PageHero'
 import ThemeBadge from '../components/ui/ThemeBadge'
 import { Download, ExternalLink, FileText } from 'lucide-react'
-import { useCollection } from '../hooks/useFirestore'
+import { useCollection, usePageContent } from '../hooks/useFirestore'
+
+// Default text blocks — Firestore siteConfig/resourcesPage values override these when set.
+// (The "contact us" paragraph keeps its mailto link in code — not exposed as a plain-text block.)
+const DEFAULTS: Record<string, string> = {
+  hero_title: 'Teaching Resources',
+  hero_lead: 'Materials produced by the ARO-UJ Praxis Network — free to use, adapt, and share for educators, researchers, and students.',
+  intro_p1: 'All materials on this page are produced through the ARO-UJ Praxis Network and are free to download, use, and adapt under Creative Commons licensing. We ask that you credit the network and ARO when using or reproducing materials.',
+}
+
+function useTxt(content: Record<string, string> | null, key: string): string {
+  return (content && content[key]) ? content[key] : DEFAULTS[key] ?? ''
+}
 
 const RESOURCE_TYPE_COLORS: Record<string, string> = {
   'Teaching guide':     'bg-blue-50 text-blue-700',
@@ -16,15 +28,18 @@ const RESOURCE_TYPE_COLORS: Record<string, string> = {
 
 export default function TeachingResourcesPage() {
   const { data: resources, loading } = useCollection<any>('resources', { publishedOnly: true })
+  const { data: pageContent } = usePageContent('resourcesPage')
+  const txt = (key: string) => useTxt(pageContent, key)
 
   return (
     <div className="bg-white">
       <PageHero
         imagePath="/images/resources/hero.jpg"
+        imageUrl={pageContent?.heroImage}
         imageAlt="Teaching and learning resources from the network"
         eyebrow="Free downloads"
-        title="Teaching Resources"
-        lead="Materials produced by the ARO-UJ Praxis Network — free to use, adapt, and share for educators, researchers, and students."
+        title={txt('hero_title')}
+        lead={txt('hero_lead')}
         variant="dark"
       />
 
@@ -35,9 +50,7 @@ export default function TeachingResourcesPage() {
           <div className="max-w-2xl mb-12">
             <p className="eyebrow mb-4">About these resources</p>
             <p className="text-body text-muted leading-relaxed mb-4">
-              All materials on this page are produced through the ARO-UJ Praxis Network and
-              are free to download, use, and adapt under Creative Commons licensing. We ask
-              that you credit the network and ARO when using or reproducing materials.
+              {txt('intro_p1')}
             </p>
             <p className="text-body text-muted leading-relaxed">
               To request a resource in a different format, or to contribute materials to this

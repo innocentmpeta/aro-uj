@@ -1,6 +1,7 @@
 import { initializeApp, getApps, getApp, FirebaseApp } from 'firebase/app'
 import { getFirestore, Firestore } from 'firebase/firestore'
 import { getAuth, Auth } from 'firebase/auth'
+import { getStorage, FirebaseStorage } from 'firebase/storage'
 
 // ── Config ─────────────────────────────────────────────────────────────────
 // Values are injected via environment variables at build time.
@@ -19,8 +20,9 @@ const firebaseConfig = {
 // Prevent duplicate initialisation in monorepo dev mode
 const app: FirebaseApp = getApps().length ? getApp() : initializeApp(firebaseConfig)
 
-export const db: Firestore = getFirestore(app)
-export const auth: Auth    = getAuth(app)
+export const db: Firestore           = getFirestore(app)
+export const auth: Auth               = getAuth(app)
+export const storage: FirebaseStorage = getStorage(app)
 export { app }
 
 // ── Collection names — single source of truth ──────────────────────────────

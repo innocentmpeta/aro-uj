@@ -13,8 +13,10 @@
  */
 
 interface PageHeroProps {
-  /** Path to hero image e.g. /images/about/hero.jpg */
+  /** Path to hero image e.g. /images/about/hero.jpg — used until a CMS image is set */
   imagePath: string
+  /** CMS-uploaded hero image URL — overrides imagePath when set */
+  imageUrl?: string | null
   /** Alt text for accessibility */
   imageAlt: string
   /** Small eyebrow label above the title */
@@ -34,6 +36,7 @@ const PLACEHOLDER =
 
 export default function PageHero({
   imagePath,
+  imageUrl,
   imageAlt,
   eyebrow,
   title,
@@ -41,6 +44,7 @@ export default function PageHero({
   variant = 'dark',
   minHeight,
 }: PageHeroProps) {
+  const resolvedImage = imageUrl || imagePath
 
   // ── SPLIT variant (About page) ───────────────────────────────────────────
   if (variant === 'split') {
@@ -66,7 +70,7 @@ export default function PageHero({
             style={{ minHeight: minHeight ?? '420px' }}
           >
             <img
-              src={imagePath}
+              src={resolvedImage}
               alt={imageAlt}
               className="absolute inset-0 w-full h-full object-cover"
               onError={e => {
@@ -97,7 +101,7 @@ export default function PageHero({
       {/* Background photo */}
       <div className="absolute inset-0">
         <img
-          src={imagePath}
+          src={resolvedImage}
           alt={imageAlt}
           className={`w-full h-full object-cover ${variant === 'dark' ? 'opacity-40' : 'opacity-60'}`}
           onError={e => {

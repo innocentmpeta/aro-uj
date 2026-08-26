@@ -59,7 +59,7 @@ export function ProjectsListPage() {
   return (
     <div>
       <div className="flex items-center justify-between mb-6">
-        <SectionHead title="Network Projects" description="All praxis projects — visible in the Praxis in Action section" />
+        <SectionHead title="Network Projects" description="All praxis projects — visible in the Projects section" />
         <Link to="/cms/projects/new">
           <Btn><Plus size={15} /> Add project</Btn>
         </Link>

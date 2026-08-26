@@ -2,18 +2,25 @@
  * ImageUpload component
  * ─────────────────────
  * Lets the content manager upload an image directly in the browser.
- * Compresses it to under 500KB, converts to base64, stores in Firestore.
- * No Firebase Storage, no file system access, no plan upgrade needed.
+ * Compresses it client-side, then uploads to Firebase Storage and
+ * returns the public download URL (stored on the Firestore document).
+ *
+ * Older documents may still hold a base64 data: URI from before this
+ * component used Storage — those keep rendering fine everywhere
+ * (SiteImage/PageHero just do <img src={value}>), they just aren't
+ * migrated. New uploads always go to Storage.
  */
 
 import { useState, useRef } from 'react'
 import imageCompression from 'browser-image-compression'
+import { ref, uploadBytes, getDownloadURL, deleteObject } from 'firebase/storage'
+import { storage } from '@arouj/firebase-config'
 import { Upload, X, Image as ImageIcon } from 'lucide-react'
 
 interface ImageUploadProps {
-  /** Current base64 string or null */
+  /** Current image URL (or legacy base64 data URI), or null */
   value: string | null
-  onChange: (base64: string | null) => void
+  onChange: (url: string | null) => void
   label?: string
   hint?: string
   /** Show YouTube option alongside image upload */
@@ -36,9 +43,9 @@ export function ImageUpload({
   allowVideo = false, videoUrl = '', onVideoChange,
   mediaType = 'image', onMediaTypeChange,
 }: ImageUploadProps) {
-  const [compressing, setCompressing] = useState(false)
-  const [error, setError]             = useState<string | null>(null)
-  const inputRef                      = useRef<HTMLInputElement>(null)
+  const [processing, setProcessing] = useState<'compressing' | 'uploading' | null>(null)
+  const [error, setError]           = useState<string | null>(null)
+  const inputRef                    = useRef<HTMLInputElement>(null)
 
   async function handleFile(file: File) {
     setError(null)
@@ -55,16 +62,30 @@ export function ImageUpload({
       return
     }
 
-    setCompressing(true)
     try {
-      const compressed  = await imageCompression(file, COMPRESSION_OPTIONS)
-      const base64      = await imageCompression.getDataUrlFromFile(compressed)
-      onChange(base64)
+      setProcessing('compressing')
+      const compressed = await imageCompression(file, COMPRESSION_OPTIONS)
+
+      setProcessing('uploading')
+      const path = `uploads/${Date.now()}-${file.name.replace(/[^a-zA-Z0-9.]/g, '_')}`
+      const storageRef = ref(storage, path)
+      await uploadBytes(storageRef, compressed)
+      const url = await getDownloadURL(storageRef)
+
+      onChange(url)
     } catch (err) {
-      setError('Could not process this image. Please try a different file.')
+      setError('Could not upload this image. Please try again.')
     } finally {
-      setCompressing(false)
+      setProcessing(null)
     }
+  }
+
+  function handleRemove() {
+    // Best-effort cleanup — only for real Storage URLs, never for legacy base64 values
+    if (value && value.startsWith('https://')) {
+      deleteObject(ref(storage, value)).catch(() => { /* ignore — file may already be gone */ })
+    }
+    onChange(null)
   }
 
   function handleDrop(e: React.DragEvent) {
@@ -147,7 +168,7 @@ export function ImageUpload({
                 </button>
                 <button
                   type="button"
-                  onClick={() => onChange(null)}
+                  onClick={handleRemove}
                   className="opacity-0 group-hover:opacity-100 transition-opacity
                              bg-red-600 text-white font-body text-xs font-medium px-3 py-1.5
                              rounded-lg flex items-center gap-1.5"
@@ -166,11 +187,13 @@ export function ImageUpload({
                          hover:border-forest hover:bg-greenlight/30 transition-colors
                          cursor-pointer text-center"
             >
-              {compressing ? (
+              {processing ? (
                 <div className="space-y-2">
                   <div className="w-8 h-8 border-2 border-forest border-t-transparent
                                   rounded-full animate-spin mx-auto" />
-                  <p className="font-body text-sm text-slate">Compressing image…</p>
+                  <p className="font-body text-sm text-slate">
+                    {processing === 'compressing' ? 'Compressing image…' : 'Uploading…'}
+                  </p>
                 </div>
               ) : (
                 <div className="space-y-2">

@@ -3,9 +3,17 @@ import React from 'react'
 import PageHero from '../components/ui/PageHero'
 import SectionNav from '../components/ui/SectionNav'
 import { Link } from 'react-router-dom'
-import { ArrowRight, ShieldCheck, Users, Link2, Ban } from 'lucide-react'
+import {
+  ArrowRight, ShieldCheck, Users, Link2, Ban, Scale, BookOpen, Heart, Lightbulb,
+} from 'lucide-react'
 import SiteImage from '../components/ui/SiteImage'
 import ThemeBadge from '../components/ui/ThemeBadge'
+
+// Fixed icon set — must match the identical map in
+// apps/cms/src/pages/StudentPrinciplesPage.tsx (icon names are stored as strings)
+const PRINCIPLE_ICONS: Record<string, React.ElementType> = {
+  ShieldCheck, Users, Link2, Ban, Scale, BookOpen, Heart, Lightbulb,
+}
 
 const HOW_TO_PARTICIPATE = [
   { step: '01', heading: 'Independent research project', body: '[Placeholder — to be replaced by Shillah and Melanie] Do your independent post-graduate research project on reclaimers in partnership with ARO.' },
@@ -26,7 +34,10 @@ const DEFAULT_FACULTIES = [
 export default function StudentPracticumPage() {
   const { sections } = useSectionToggles()
   const { data: projects } = useCollection<any>('projects', { publishedOnly: true })
+  const { data: principlesFromDB } = useCollection<any>('studentPrinciples', { publishedOnly: true })
   const { data: pageContent } = usePageContent('practicumPage')
+
+  const principles = [...principlesFromDB].sort((a: any, b: any) => (a.order ?? 0) - (b.order ?? 0))
 
   const show = (key: string) => sections[key] !== false
 
@@ -48,6 +59,7 @@ export default function StudentPracticumPage() {
       {/* ── HERO ──────────────────────────────────────────────────── */}
       <PageHero
         imagePath="/images/practicum/hero.jpg"
+        imageUrl={pageContent?.heroImage}
         imageAlt="UJ student and reclaimer working together in the field"
         eyebrow="For UJ students & researchers"
         title="Student research"
@@ -122,20 +134,18 @@ export default function StudentPracticumPage() {
               </p>
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              {([
-                ['Informed consent',        ShieldCheck, 'All research participants provide explicit informed consent. Reclaimers control how their stories and images are used.'],
-                ['Community benefit first', Users,       'Projects must produce a tangible benefit for the reclaimer community — not only an academic output.'],
-                ['Co-ownership of outputs', Link2,       'Research, designs, and materials produced in the practicum are co-owned by the network and remain accessible to ARO.'],
-                ['No extractive research',  Ban,         'Students do not take data from the community and disappear. Reflection and feedback are built into every placement.'],
-              ] as [string, React.ElementType, string][]).map(([heading, Icon, body]) => (
-                <div key={heading} className="rounded-2xl border border-border bg-white p-6">
+              {principles.map((principle: any) => {
+                const Icon = PRINCIPLE_ICONS[principle.icon] ?? ShieldCheck
+                return (
+                <div key={principle.id} className="rounded-2xl border border-border bg-white p-6">
                   <div className="p-2 bg-greenlight rounded-lg w-fit mb-4">
                     <Icon size={26} className="text-forest" />
                   </div>
-                  <h3 className="font-display font-bold text-ink text-large mb-2">{heading}</h3>
-                  <p className="font-body text-sm text-muted leading-relaxed">{body}</p>
+                  <h3 className="font-display font-bold text-ink text-large mb-2">{principle.heading}</h3>
+                  <p className="font-body text-sm text-muted leading-relaxed">{principle.body}</p>
                 </div>
-              ))}
+                )
+              })}
             </div>
           </div>
         </section>

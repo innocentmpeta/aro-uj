@@ -13,6 +13,9 @@ import { StatsPage, SettingsPage } from './pages/StatsSettingsPage'
 import WorkPackagesPage from './pages/WorkPackagesPage'
 import PageContentPage from './pages/PageContentPage'
 import FacultiesPage from './pages/FacultiesPage'
+import PartnersPage from './pages/PartnersPage'
+import StudentPrinciplesPage from './pages/StudentPrinciplesPage'
+import JoinPathwaysPage from './pages/JoinPathwaysPage'
 
 function ProtectedRoute({ children }: { children: React.ReactNode }) {
   const { user, loading, isAdmin } = useAuth()
@@ -86,8 +89,13 @@ export default function App() {
         {/* Faculties & Departments */}
         <Route path="/cms/faculties"      element={<Protected><FacultiesPage /></Protected>} />
 
-        {/* Page Content blocks */}
-        <Route path="/cms/page-content"   element={<Protected><PageContentPage /></Protected>} />
+        {/* Partners, Student Principles, Join Pathways */}
+        <Route path="/cms/partners"           element={<Protected><PartnersPage /></Protected>} />
+        <Route path="/cms/student-principles" element={<Protected><StudentPrinciplesPage /></Protected>} />
+        <Route path="/cms/join-pathways"      element={<Protected><JoinPathwaysPage /></Protected>} />
+
+        {/* Page Content blocks — one per manageable page */}
+        <Route path="/cms/content/:pageId" element={<Protected><PageContentPage /></Protected>} />
 
         {/* Work Packages */}
         <Route path="/cms/work-packages"  element={<Protected><WorkPackagesPage /></Protected>} />

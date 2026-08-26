@@ -3,19 +3,32 @@ import { ArrowRight } from 'lucide-react'
 import PageHero from '../components/ui/PageHero'
 import ThemeBadge from '../components/ui/ThemeBadge'
 import SiteImage from '../components/ui/SiteImage'
-import { useCollection } from '../hooks/useFirestore'
+import { useCollection, usePageContent } from '../hooks/useFirestore'
+
+// Default text blocks — Firestore siteConfig/newsPage values override these when set
+const DEFAULTS: Record<string, string> = {
+  hero_title: 'News & Updates',
+  hero_lead: 'Project news, events, policy updates, and publications from the ARO-UJ Praxis Network.',
+}
+
+function useTxt(content: Record<string, string> | null, key: string): string {
+  return (content && content[key]) ? content[key] : DEFAULTS[key] ?? ''
+}
 
 export default function NewsPage() {
   const { data: news, loading } = useCollection<any>('news', { publishedOnly: true })
+  const { data: pageContent } = usePageContent('newsPage')
+  const txt = (key: string) => useTxt(pageContent, key)
 
   return (
     <div className="bg-white">
       <PageHero
         imagePath="/images/news/hero.jpg"
+        imageUrl={pageContent?.heroImage}
         imageAlt="News and updates from the ARO-UJ Praxis Network"
         eyebrow="Latest"
-        title="News & Updates"
-        lead="Project news, events, policy updates, and publications from the ARO-UJ Praxis Network."
+        title={txt('hero_title')}
+        lead={txt('hero_lead')}
         variant="dark"
       />
 

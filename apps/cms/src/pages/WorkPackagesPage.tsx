@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react'
-import { Pencil, Save, X, ChevronDown, ChevronUp } from 'lucide-react'
-import { getCollection, setDocument } from '../lib/firebase'
+import { Pencil, Save, X, ChevronDown, ChevronUp, Plus, Trash2 } from 'lucide-react'
+import { getCollection, setDocument, extractYouTubeId } from '../lib/firebase'
 import { Btn, Card, SectionHead, Toast, Field, Input, Textarea } from '../components/ui'
+import { ImageUpload } from '../components/ui/ImageUpload'
 
 // ── Canonical WP definitions (code + default title/summary) ───────────────
 const WP_DEFAULTS = [
@@ -37,25 +38,37 @@ const WP_DEFAULTS = [
     summary: 'Creating spaces for ARO members to engage on gender issues in the sector and developing feminist strategies to promote gender justice.' },
 ]
 
+interface WPDocument {
+  label: string
+  url: string
+}
+
 interface WPData {
   id: string
   code: string
   title: string
   summary: string
   leader: string
+  photos?: string[]
+  documents?: WPDocument[]
+  videoId?: string
 }
 
 interface EditState {
   title: string
   summary: string
   leader: string
+  photos: string[]
+  documents: WPDocument[]
+  videoUrl: string
 }
 
 export default function WorkPackagesPage() {
   const [wpData, setWpData] = useState<Record<string, WPData>>({})
   const [editingId, setEditingId] = useState<string | null>(null)
-  const [editForm, setEditForm] = useState<EditState>({ title: '', summary: '', leader: '' })
+  const [editForm, setEditForm] = useState<EditState>({ title: '', summary: '', leader: '', photos: [], documents: [], videoUrl: '' })
   const [saving, setSaving] = useState(false)
+  const [errors, setErrors] = useState<{ videoUrl?: string }>({})
   const [expandedId, setExpandedId] = useState<string | null>(null)
   const [toast, setToast] = useState<{ message: string; type: 'success' | 'error' } | null>(null)
 
@@ -81,18 +94,40 @@ export default function WorkPackagesPage() {
   function startEdit(def: typeof WP_DEFAULTS[0]) {
     const d = getDisplayData(def)
     setEditingId(def.id)
-    setEditForm({ title: d.title, summary: d.summary, leader: d.leader })
+    setErrors({})
+    setEditForm({
+      title: d.title,
+      summary: d.summary,
+      leader: d.leader,
+      photos: d.photos ?? [],
+      documents: d.documents ?? [],
+      videoUrl: d.videoId ? `https://youtube.com/watch?v=${d.videoId}` : '',
+    })
     setExpandedId(def.id)
   }
 
   function cancelEdit() {
     setEditingId(null)
+    setErrors({})
   }
 
   async function saveEdit(id: string, code: string) {
+    if (editForm.videoUrl && !extractYouTubeId(editForm.videoUrl)) {
+      setErrors({ videoUrl: 'This doesn\'t look like a valid YouTube link' })
+      return
+    }
     setSaving(true)
     try {
-      const payload: WPData = { id, code, ...editForm }
+      const videoId = editForm.videoUrl ? extractYouTubeId(editForm.videoUrl) : null
+      const payload: WPData = {
+        id, code,
+        title: editForm.title,
+        summary: editForm.summary,
+        leader: editForm.leader,
+        photos: editForm.photos.filter(Boolean),
+        documents: editForm.documents.filter(d => d.label && d.url),
+        videoId: videoId ?? undefined,
+      }
       await setDocument('workPackages', id, payload)
       setWpData(prev => ({ ...prev, [id]: payload }))
       setEditingId(null)
@@ -102,6 +137,31 @@ export default function WorkPackagesPage() {
     } finally {
       setSaving(false)
     }
+  }
+
+  // ── Photo row helpers ──────────────────────────────────────────────────
+  function addPhoto() {
+    setEditForm(f => ({ ...f, photos: [...f.photos, ''] }))
+  }
+  function updatePhoto(i: number, value: string) {
+    setEditForm(f => ({ ...f, photos: f.photos.map((p, idx) => idx === i ? value : p) }))
+  }
+  function removePhoto(i: number) {
+    setEditForm(f => ({ ...f, photos: f.photos.filter((_, idx) => idx !== i) }))
+  }
+
+  // ── Document row helpers ───────────────────────────────────────────────
+  function addDocument() {
+    setEditForm(f => ({ ...f, documents: [...f.documents, { label: '', url: '' }] }))
+  }
+  function updateDocument(i: number, field: 'label' | 'url', value: string) {
+    setEditForm(f => ({
+      ...f,
+      documents: f.documents.map((d, idx) => idx === i ? { ...d, [field]: value } : d),
+    }))
+  }
+  function removeDocument(i: number) {
+    setEditForm(f => ({ ...f, documents: f.documents.filter((_, idx) => idx !== i) }))
   }
 
   return (
@@ -179,6 +239,63 @@ export default function WorkPackagesPage() {
                           rows={3}
                         />
                       </Field>
+
+                      <Field label="Video (YouTube link, optional)">
+                        <Input
+                          value={editForm.videoUrl}
+                          onChange={e => setEditForm(f => ({ ...f, videoUrl: e.target.value }))}
+                          placeholder="https://youtube.com/watch?v=…"
+                        />
+                        {errors.videoUrl && <p className="font-body text-xs text-red-600 mt-2">{errors.videoUrl}</p>}
+                      </Field>
+
+                      <Field label="Photos (optional)">
+                        <div className="space-y-4">
+                          {editForm.photos.map((src, i) => (
+                            <div key={i} className="flex gap-2 items-start">
+                              <div className="flex-1">
+                                <ImageUpload
+                                  value={src || null}
+                                  onChange={url => updatePhoto(i, url ?? '')}
+                                  label={`Photo ${i + 1}`}
+                                />
+                              </div>
+                              <Btn variant="ghost" size="sm" onClick={() => removePhoto(i)}>
+                                <Trash2 size={13} /> Remove slot
+                              </Btn>
+                            </div>
+                          ))}
+                          <Btn variant="ghost" size="sm" onClick={addPhoto}>
+                            <Plus size={13} /> Add photo
+                          </Btn>
+                        </div>
+                      </Field>
+
+                      <Field label="Documents (optional)">
+                        <div className="space-y-2">
+                          {editForm.documents.map((doc, i) => (
+                            <div key={i} className="flex gap-2">
+                              <Input
+                                value={doc.label}
+                                onChange={e => updateDocument(i, 'label', e.target.value)}
+                                placeholder="Document label, e.g. Social Plans Position Paper"
+                              />
+                              <Input
+                                value={doc.url}
+                                onChange={e => updateDocument(i, 'url', e.target.value)}
+                                placeholder="Link to file"
+                              />
+                              <Btn variant="ghost" size="sm" onClick={() => removeDocument(i)}>
+                                <Trash2 size={13} />
+                              </Btn>
+                            </div>
+                          ))}
+                          <Btn variant="ghost" size="sm" onClick={addDocument}>
+                            <Plus size={13} /> Add document
+                          </Btn>
+                        </div>
+                      </Field>
+
                       <div className="flex gap-3 justify-end pt-1">
                         <Btn variant="ghost" onClick={cancelEdit}>
                           <X size={13} /> Cancel
@@ -189,7 +306,18 @@ export default function WorkPackagesPage() {
                       </div>
                     </div>
                   ) : (
-                    <p className="font-body text-sm text-slate leading-relaxed">{d.summary}</p>
+                    <div>
+                      <p className="font-body text-sm text-slate leading-relaxed">{d.summary}</p>
+                      {((d.photos?.length ?? 0) > 0 || (d.documents?.length ?? 0) > 0 || d.videoId) && (
+                        <p className="font-body text-xs text-slate/50 mt-3">
+                          {[
+                            d.videoId && '1 video',
+                            (d.photos?.length ?? 0) > 0 && `${d.photos!.length} photo${d.photos!.length !== 1 ? 's' : ''}`,
+                            (d.documents?.length ?? 0) > 0 && `${d.documents!.length} document${d.documents!.length !== 1 ? 's' : ''}`,
+                          ].filter(Boolean).join(' · ')}
+                        </p>
+                      )}
+                    </div>
                   )}
                 </div>
               )}

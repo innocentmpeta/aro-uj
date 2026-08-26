@@ -27,6 +27,15 @@ service cloud.firestore {
       allow write: if request.auth != null;
     }
 
+    // workPackages — overrides for a fixed set of 10 canonical work
+    // packages (no draft/unpublished concept), so the frontend queries
+    // this collection without a published filter. Must be publicly
+    // readable unconditionally, or that unfiltered query is denied.
+    match /workPackages/{document=**} {
+      allow read: if true;
+      allow write: if request.auth != null;
+    }
+
     // admins — CMS access-control list. A signed-in user may check only
     // their own admin status. Admin status is granted out-of-band
     // (Firestore console / CLI), never by a client write.

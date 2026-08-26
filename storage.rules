@@ -1,0 +1,15 @@
+rules_version = '2';
+service firebase.storage {
+  match /b/{bucket}/o {
+
+    // uploads/** — hero images, News/Projects/Team images, work-package
+    // photos, etc. Public read (the site displays them to all visitors);
+    // write restricted to signed-in admins only, mirroring the Firestore
+    // admins gate.
+    match /uploads/{allPaths=**} {
+      allow read: if true;
+      allow write: if request.auth != null &&
+        firestore.exists(/databases/(default)/documents/admins/$(request.auth.uid));
+    }
+  }
+}

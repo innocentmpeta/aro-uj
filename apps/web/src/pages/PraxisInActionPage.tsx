@@ -5,7 +5,18 @@ import { ArrowRight, ChevronDown, ChevronUp, FileText, ExternalLink } from 'luci
 import ThemeBadge from '../components/ui/ThemeBadge'
 import SiteImage from '../components/ui/SiteImage'
 import VideoEmbed from '../components/ui/VideoEmbed'
-import { useCollection, useSectionToggles, useWorkPackages, WorkPackage } from '../hooks/useFirestore'
+import { useCollection, useSectionToggles, useWorkPackages, usePageContent, WorkPackage } from '../hooks/useFirestore'
+
+// Default text blocks — Firestore siteConfig/projectsPage values override these when set
+const DEFAULTS: Record<string, string> = {
+  hero_title: 'Projects',
+  hero_lead: 'Knowledge applied in the real world, and learning that comes back from that application. Work done with reclaimers — not about them.',
+  intro_text: 'Each work package is a sustained area of work led by a UJ faculty in partnership with ARO. Click any work package to see its projects and details.',
+}
+
+function useTxt(content: Record<string, string> | null, key: string): string {
+  return (content && content[key]) ? content[key] : DEFAULTS[key] ?? ''
+}
 
 // ── WP fallback data (mirrors HomePage defaults) ───────────────────────────
 const WP_DEFAULTS: Omit<WorkPackage, 'published'>[] = [
@@ -25,6 +36,8 @@ export default function PraxisInActionPage() {
   const { sections } = useSectionToggles()
   const { data: projects, loading: loadingProj } = useCollection<any>('projects', { publishedOnly: true })
   const { data: wpFromFirestore } = useWorkPackages()
+  const { data: pageContent } = usePageContent('projectsPage')
+  const txt = (key: string) => useTxt(pageContent, key)
 
   // Merge live WP data over defaults
   const workPackages = WP_DEFAULTS.map(def => {
@@ -52,10 +65,11 @@ export default function PraxisInActionPage() {
       {/* ── HERO ──────────────────────────────────────────────────── */}
       <PageHero
         imagePath="/images/praxis/hero.jpg"
+        imageUrl={pageContent?.heroImage}
         imageAlt="Network members working alongside reclaimers"
         eyebrow="The work of the network"
-        title="Projects"
-        lead="Knowledge applied in the real world, and learning that comes back from that application. Work done with reclaimers — not about them."
+        title={txt('hero_title')}
+        lead={txt('hero_lead')}
         variant="dark"
       />
 
@@ -65,8 +79,7 @@ export default function PraxisInActionPage() {
           <p className="eyebrow">10 work packages</p>
           <h2 className="section-heading">All network projects</h2>
           <p className="text-body text-muted max-w-2xl mb-10">
-            Each work package is a sustained area of work led by a UJ faculty in
-            partnership with ARO. Click any work package to see its projects and details.
+            {txt('intro_text')}
           </p>
 
           <div className="space-y-3">

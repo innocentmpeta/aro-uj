@@ -4,41 +4,18 @@ import { db } from '@arouj/firebase-config'
 import PageHero from '../components/ui/PageHero'
 import { ArrowRight, ExternalLink, CheckCircle2 } from 'lucide-react'
 import { Link } from 'react-router-dom'
+import { usePageContent, useCollection } from '../hooks/useFirestore'
 
-const PATHWAYS = [
-  {
-    audience: 'UJ Students',
-    heading: 'Participate in the practicum',
-    body: 'Students from all UJ faculties can apply to complete a structured practicum placement working alongside ARO members. Applications open each semester.',
-    action: 'Learn about the practicum',
-    to: '/student-practicum',
-    internal: true,
-  },
-  {
-    audience: 'UJ Faculty & Researchers',
-    heading: 'Bring your expertise to the network',
-    body: 'If you see a connection between your research or teaching and the challenges reclaimers face, we want to hear from you. The network is actively growing its faculty base.',
-    action: 'Email the coordinator',
-    to: 'mailto:praxis@uj.ac.za?subject=Faculty interest in Praxis Network',
-    internal: false,
-  },
-  {
-    audience: 'International Partners',
-    heading: 'Partner with the network',
-    body: 'We welcome collaboration with universities, research institutions, and international organisations working on informal economies, waste policy, and participatory methods.',
-    action: 'Get in touch',
-    to: 'mailto:praxis@uj.ac.za?subject=International partnership enquiry',
-    internal: false,
-  },
-  {
-    audience: 'Reclaimers\' Organisations',
-    heading: 'Join a growing movement',
-    body: 'ARO-UJ Praxis works in solidarity with reclaimer organisations beyond South Africa. If your organisation faces similar challenges and wants to share learning, we would like to connect.',
-    action: 'Reach out',
-    to: 'mailto:praxis@uj.ac.za?subject=Reclaimer organisation enquiry',
-    internal: false,
-  },
-]
+// Default text blocks — Firestore siteConfig/joinPage values override these when set
+const DEFAULTS: Record<string, string> = {
+  hero_title: 'Join the Network',
+  hero_lead: "The network is open to students, researchers, faculty, international partners, and reclaimers' organisations. Every discipline has something to contribute.",
+  form_intro: 'Not sure which pathway fits? Send a message and a network coordinator will respond within five working days.',
+}
+
+function useTxt(content: Record<string, string> | null, key: string): string {
+  return (content && content[key]) ? content[key] : DEFAULTS[key] ?? ''
+}
 
 export default function JoinPage() {
   const [name, setName]         = useState('')
@@ -46,6 +23,11 @@ export default function JoinPage() {
   const [interest, setInterest] = useState('')
   const [message, setMessage]   = useState('')
   const [status, setStatus]     = useState<'idle' | 'submitting' | 'sent' | 'error'>('idle')
+  const { data: pageContent }   = usePageContent('joinPage')
+  const { data: pathwaysFromDB } = useCollection<any>('joinPathways', { publishedOnly: true })
+  const txt = (key: string) => useTxt(pageContent, key)
+
+  const pathways = [...pathwaysFromDB].sort((a: any, b: any) => (a.order ?? 0) - (b.order ?? 0))
 
   async function handleSubmit(e: FormEvent) {
     e.preventDefault()
@@ -70,10 +52,11 @@ export default function JoinPage() {
       {/* ── HERO ────────────────────────────────────────────────── */}
       <PageHero
         imagePath="/images/join/hero.jpg"
+        imageUrl={pageContent?.heroImage}
         imageAlt="People joining and collaborating in the network"
         eyebrow="Grow the network"
-        title="Join the Network"
-        lead="The network is open to students, researchers, faculty, international partners, and reclaimers' organisations. Every discipline has something to contribute."
+        title={txt('hero_title')}
+        lead={txt('hero_lead')}
         variant="dark"
       />
 
@@ -82,21 +65,21 @@ export default function JoinPage() {
         <div className="container">
           <p className="eyebrow mb-10">Find your pathway</p>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {PATHWAYS.map(({ audience, heading, body, action, to, internal }) => (
-              <div key={audience}
+            {pathways.map((pathway: any) => (
+              <div key={pathway.id}
                 className="bg-white rounded-2xl border border-border p-8
                            hover:border-forest transition-colors duration-200">
                 <div className="font-body text-xs font-semibold tracking-widest uppercase text-forest mb-4">
-                  {audience}
+                  {pathway.audience}
                 </div>
-                <h2 className="font-display font-bold text-ink text-h3 mb-3">{heading}</h2>
-                <p className="font-body text-small text-muted leading-relaxed mb-6">{body}</p>
-                {internal
-                  ? <Link to={to} className="btn-outline text-sm">
-                      {action} <ArrowRight size={14} />
+                <h2 className="font-display font-bold text-ink text-h3 mb-3">{pathway.heading}</h2>
+                <p className="font-body text-small text-muted leading-relaxed mb-6">{pathway.body}</p>
+                {pathway.internal
+                  ? <Link to={pathway.actionHref} className="btn-outline text-sm">
+                      {pathway.actionLabel} <ArrowRight size={14} />
                     </Link>
-                  : <a href={to} className="btn-primary text-sm">
-                      {action} <ExternalLink size={13} />
+                  : <a href={pathway.actionHref} className="btn-primary text-sm">
+                      {pathway.actionLabel} <ExternalLink size={13} />
                     </a>
                 }
               </div>
@@ -111,8 +94,7 @@ export default function JoinPage() {
           <p className="eyebrow">General enquiry</p>
           <h2 className="section-heading">Send us a message</h2>
           <p className="text-body text-muted mb-10">
-            Not sure which pathway fits? Send a message and a network
-            coordinator will respond within five working days.
+            {txt('form_intro')}
           </p>
 
           {status === 'sent' ? (

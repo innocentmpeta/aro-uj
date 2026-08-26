@@ -1,10 +1,44 @@
-import { useSectionToggles } from '../hooks/useFirestore'
+import { useSectionToggles, usePageContent } from '../hooks/useFirestore'
 import React from 'react'
 import PageHero from '../components/ui/PageHero'
 import SectionNav from '../components/ui/SectionNav'
 import { ExternalLink, ArrowRight, ShoppingCart, Sliders, Tag, RefreshCw, MapPin, CreditCard, FileText, Globe } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import SiteImage from '../components/ui/SiteImage'
+
+// Default text blocks — Firestore siteConfig/reclaimersPage values override these when set.
+// Multi-paragraph blocks are stored as one string, paragraphs separated by a blank line.
+const DEFAULTS: Record<string, string> = {
+  hero_lead: "Before most of Johannesburg wakes up, reclaimers are already at work — collecting the recyclable materials that sustain South Africa's recycling economy.",
+  understanding_heading: 'Essential workers. Excluded from the system they sustain.',
+  understanding_body:
+    "Reclaimers — also called waste pickers or informal recyclers — are the men and women who collect, sort, transport, and sell recyclable materials from South Africa's streets, landfill sites, and communities. Research by the CSIR estimates that close to 90,000 South Africans work as informal reclaimers.\n\n" +
+    "They are responsible for collecting 80 to 90 percent of all post-consumer packaging that is recycled in this country — a contribution that saves municipalities an estimated R780 million annually in landfill costs. South Africa's recycling rates, which are among the highest on the continent, exist almost entirely because of their labour.\n\n" +
+    'Yet reclaimers are systematically excluded from the formal waste management system. They are not recognised as workers. They are not paid for the service they provide to municipalities and producers. They have no access to social protections. And they face constant risk of displacement as private companies bid for recycling contracts that reclaimers have always serviced.\n\n' +
+    'This is the context in which ARO-UJ Praxis works. The partnership exists not to study reclaimers as a social phenomenon, but to work alongside them as they organise, advocate, and fight for recognition and rights.',
+  challenges_heading: 'Doing essential work.\nDenied essential rights.',
+  challenges_intro: 'Reclaimers face a consistent set of systemic barriers — not individual misfortunes, but the predictable result of an economic and policy environment that has not yet caught up with the reality of their contribution.',
+  quote_text: 'We are not begging. We are working. We are asking to be recognised for the work we already do — and to be paid for it.',
+  quote_cite: 'ARO member, Johannesburg',
+  aro_heading: 'The African Reclaimers Organisation',
+  aro_body:
+    "The African Reclaimers Organisation (ARO) is a democratic, membership-based organisation of reclaimers, founded in Johannesburg in 2016, when street and landfill reclaimers in the city united to mobilise against the municipality's attempt to contract private companies to collect recyclables — a move that would have dispossessed reclaimers of their livelihoods. ARO's membership has since expanded to Mpumalanga, the Western Cape, and the Eastern Cape.\n\n" +
+    'In 2023, ARO established ARO Recycling, a recycling company owned by reclaimers, through which ARO provides separation at source services to middle- and high-income areas in Johannesburg.\n\n' +
+    "ARO is named 'African' because it represents reclaimers of all nationalities engaged in the recycling trade. It is run by its members, for its members — a democratic organisation where reclaimers elect their own leadership and make decisions collectively.\n\n" +
+    "ARO is the lead partner in the ARO-UJ Praxis Network. It is not a beneficiary of the network's work — it is a co-director of it.",
+}
+
+function useTxt(content: Record<string, string> | null, key: string): string {
+  return (content && content[key]) ? content[key] : DEFAULTS[key] ?? ''
+}
+
+function Paragraphs({ text, className }: { text: string; className?: string }) {
+  return (
+    <>
+      {text.split('\n\n').map((p, i) => <p key={i} className={className}>{p}</p>)}
+    </>
+  )
+}
 
 // ── TO SWAP IMAGES:
 // /images/reclaimers/hero.jpg        — wide shot, reclaimers at work
@@ -36,16 +70,20 @@ const CHALLENGES = [
 
 export default function TheReclaimersPage() {
   const { sections } = useSectionToggles()
+  const { data: pageContent } = usePageContent('reclaimersPage')
+  const txt = (key: string) => useTxt(pageContent, key)
+
   return (
     <div className="bg-white">
 
       {/* ── HERO ────────────────────────────────────────────────── */}
       <PageHero
         imagePath="/images/reclaimers/hero.jpg"
+        imageUrl={pageContent?.heroImage}
         imageAlt="Reclaimers at work in Johannesburg"
         eyebrow="Who we work with"
         title="Reclaimers"
-        lead="Before most of Johannesburg wakes up, reclaimers are already at work — collecting the recyclable materials that sustain South Africa's recycling economy."
+        lead={txt('hero_lead')}
         variant="dark"
       />
 
@@ -62,39 +100,9 @@ export default function TheReclaimersPage() {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
             <div>
               <p className="eyebrow">Understanding reclaimers</p>
-              <h2 className="section-heading">
-                Essential workers. Excluded from the system they sustain.
-              </h2>
+              <h2 className="section-heading">{txt('understanding_heading')}</h2>
               <div className="space-y-5 text-body text-muted">
-                <p>
-                  Reclaimers — also called waste pickers or informal recyclers —
-                  are the men and women who collect, sort, transport, and sell
-                  recyclable materials from South Africa's streets, landfill sites,
-                  and communities. Research by the CSIR estimates that close to
-                  90,000 South Africans work as informal reclaimers.
-                </p>
-                <p>
-                  They are responsible for collecting 80 to 90 percent of all
-                  post-consumer packaging that is recycled in this country — a
-                  contribution that saves municipalities an estimated R780 million
-                  annually in landfill costs. South Africa's recycling rates, which
-                  are among the highest on the continent, exist almost entirely
-                  because of their labour.
-                </p>
-                <p>
-                  Yet reclaimers are systematically excluded from the formal waste
-                  management system. They are not recognised as workers. They are
-                  not paid for the service they provide to municipalities and
-                  producers. They have no access to social protections. And they
-                  face constant risk of displacement as private companies bid for
-                  recycling contracts that reclaimers have always serviced.
-                </p>
-                <p>
-                  This is the context in which ARO-UJ Praxis works. The partnership
-                  exists not to study reclaimers as a social phenomenon, but to
-                  work alongside them as they organise, advocate, and fight for
-                  recognition and rights.
-                </p>
+                <Paragraphs text={txt('understanding_body')} />
               </div>
             </div>
 
@@ -157,14 +165,11 @@ export default function TheReclaimersPage() {
             <div>
               <p className="eyebrow">Systemic challenges</p>
               <h2 className="section-heading">
-                Doing essential work.<br />Denied essential rights.
+                {txt('challenges_heading').split('\n').map((line, i, arr) => (
+                  <React.Fragment key={i}>{line}{i < arr.length - 1 && <br />}</React.Fragment>
+                ))}
               </h2>
-              <p className="text-body text-muted mb-8">
-                Reclaimers face a consistent set of systemic barriers — not
-                individual misfortunes, but the predictable result of an economic
-                and policy environment that has not yet caught up with the reality
-                of their contribution.
-              </p>
+              <p className="text-body text-muted mb-8">{txt('challenges_intro')}</p>
               <ul className="space-y-4">
                 {CHALLENGES.map(challenge => (
                   <li key={challenge} className="flex items-start gap-4">
@@ -188,11 +193,10 @@ export default function TheReclaimersPage() {
           <blockquote>
             <p className="font-display font-light text-white italic mb-6"
                style={{ fontSize: 'clamp(1.25rem, 2.5vw, 1.8rem)', lineHeight: 1.5 }}>
-              "We are not begging. We are working. We are asking to be recognised
-              for the work we already do — and to be paid for it."
+              "{txt('quote_text')}"
             </p>
             <cite className="font-body text-small text-white/60 not-italic">
-              ARO member, Johannesburg
+              {txt('quote_cite')}
             </cite>
           </blockquote>
         </div>
@@ -206,36 +210,9 @@ export default function TheReclaimersPage() {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
             <div>
               <p className="eyebrow">The organisation</p>
-              <h2 className="section-heading">
-                The African Reclaimers Organisation
-              </h2>
+              <h2 className="section-heading">{txt('aro_heading')}</h2>
               <div className="space-y-5 text-body text-muted">
-                <p>
-                  The African Reclaimers Organisation (ARO) is a democratic,
-                  membership-based organisation of reclaimers, founded in Johannesburg
-                  in 2016, when street and landfill reclaimers in the city united to
-                  mobilise against the municipality's attempt to contract private
-                  companies to collect recyclables — a move that would have dispossessed
-                  reclaimers of their livelihoods. ARO's membership has since expanded
-                  to Mpumalanga, the Western Cape, and the Eastern Cape.
-                </p>
-                <p>
-                  In 2023, ARO established ARO Recycling, a recycling company owned by
-                  reclaimers, through which ARO provides separation at source services
-                  to middle- and high-income areas in Johannesburg.
-                </p>
-                <p>
-                  ARO is named 'African' because it represents reclaimers of
-                  all nationalities engaged in the recycling trade. It is run by
-                  its members, for its members — a democratic organisation where
-                  reclaimers elect their own leadership and make decisions
-                  collectively.
-                </p>
-                <p>
-                  ARO is the lead partner in the ARO-UJ Praxis Network. It is
-                  not a beneficiary of the network's work — it is a co-director
-                  of it.
-                </p>
+                <Paragraphs text={txt('aro_body')} />
               </div>
 
               {/* ARO programmes summary */}

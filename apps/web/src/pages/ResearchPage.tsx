@@ -2,8 +2,20 @@ import { useState, useEffect } from 'react'
 import PageHero from '../components/ui/PageHero'
 import { ExternalLink, RefreshCw, BookOpen, Globe } from 'lucide-react'
 import ThemeBadge from '../components/ui/ThemeBadge'
-import { useCollection } from '../hooks/useFirestore'
+import { useCollection, usePageContent } from '../hooks/useFirestore'
 import { Theme } from '@arouj/types'
+
+// Default text blocks — Firestore siteConfig/publicationsPage values override these when set.
+// (The CrossRef intro paragraph below keeps its live hyperlink in code — not exposed as a
+// plain-text CMS block, since a textarea can't represent the embedded link.)
+const DEFAULTS: Record<string, string> = {
+  hero_title: 'Publications',
+  hero_lead: 'Publications from the ARO-UJ Praxis Network alongside a live feed of global research on reclaimers, informal recycling, and waste picker rights.',
+}
+
+function useTxt(content: Record<string, string> | null, key: string): string {
+  return (content && content[key]) ? content[key] : DEFAULTS[key] ?? ''
+}
 
 // ── CrossRef API ───────────────────────────────────────────────────────────
 const SEARCH_QUERIES = [
@@ -159,6 +171,8 @@ export default function ResearchPage() {
   const { data: networkPubs, loading: networkLoading } = useCollection<any>(
     'publications', { publishedOnly: true }
   )
+  const { data: pageContent } = usePageContent('publicationsPage')
+  const txt = (key: string) => useTxt(pageContent, key)
 
   async function loadGlobal(query: string) {
     setLoading(true)
@@ -185,10 +199,11 @@ export default function ResearchPage() {
       {/* ── HERO ────────────────────────────────────────────────────── */}
       <PageHero
         imagePath="/images/research/hero.jpg"
+        imageUrl={pageContent?.heroImage}
         imageAlt="Research and publications from the ARO-UJ Praxis Network"
         eyebrow="Knowledge from the network and the world"
-        title="Publications"
-        lead="Publications from the ARO-UJ Praxis Network alongside a live feed of global research on reclaimers, informal recycling, and waste picker rights."
+        title={txt('hero_title')}
+        lead={txt('hero_lead')}
         variant="dark"
       />
 

@@ -12,7 +12,7 @@ const SECTIONS = [
       { key: 'home_stats',        label: 'Impact numbers',        description: 'The six statistics strip below the hero' },
       { key: 'home_about',        label: 'About intro',           description: 'The two-column "equal partnership" section' },
       { key: 'home_partners_strip', label: 'Partner identity strip',  description: 'The ARO and UJ logo + one-line description cards below the stats' },
-      { key: 'home_workpackages',   label: 'Work packages grid',      description: 'The 10 work package cards — click through to Praxis in Action' },
+      { key: 'home_workpackages',   label: 'Work packages grid',      description: 'The 10 work package cards — click through to Projects' },
       { key: 'home_story',        label: 'Featured story',        description: 'The large story card with photo, quote, and video' },
       { key: 'home_quote',        label: 'Reclaimer quote block', description: 'The full-width green quote section' },
       { key: 'home_projects',     label: 'Recent projects',       description: 'The three-column project card grid' },
@@ -23,7 +23,6 @@ const SECTIONS = [
   {
     page: 'The Reclaimers',
     items: [
-      { key: 'reclaimers_stats',      label: 'Statistics',        description: 'The four impact stat cards' },
       { key: 'reclaimers_what',       label: 'What reclaimers do', description: 'The four cards — collect, sort, sell, sustain' },
       { key: 'reclaimers_challenges', label: 'Systemic challenges', description: 'The challenges list with photo' },
       { key: 'reclaimers_quote',      label: 'Reclaimer quote',   description: 'The green quote section' },
@@ -31,10 +30,9 @@ const SECTIONS = [
     ]
   },
   {
-    page: 'Praxis in Action',
+    page: 'Approach',
     items: [
-      { key: 'praxis_cycle',      label: 'How it works',          description: 'The four-step praxis cycle cards' },
-      { key: 'praxis_story',      label: 'Featured story',        description: 'The story preview section' },
+      { key: 'praxis_cycle',      label: 'The praxis cycle',      description: 'The four-step praxis cycle cards' },
     ]
   },
   {
@@ -51,16 +49,16 @@ const SECTIONS = [
     ]
   },
   {
-    page: 'Student Practicum',
+    page: 'Student Research',
     items: [
+      { key: 'practicum_past',    label: 'Past student research projects', description: 'Previous student project cards' },
+      { key: 'practicum_ethics',  label: 'Principles for Student Projects', description: 'The four principle cards' },
+      { key: 'practicum_how',     label: 'How can students participate?',  description: 'The three ways to participate' },
       { key: 'practicum_who',     label: 'Who can apply',         description: 'The faculty grid section' },
-      { key: 'practicum_how',     label: 'How it works',          description: 'The five-step process' },
-      { key: 'practicum_past',    label: 'Past highlights',       description: 'Previous practicum project cards' },
-      { key: 'practicum_ethics',  label: 'Ethical principles',    description: 'The four ethical principle cards' },
     ]
   },
   {
-    page: 'Praxis in Action — Work Packages',
+    page: 'Projects — Work Packages',
     items: [
       { key: 'prog_wp1',  label: 'Network Coordination (WP1)',          description: 'Auto-hidden if no projects — toggle off to hide even with projects' },
       { key: 'prog_wp2',  label: 'ARO Public Engagement (WP2)',         description: 'Auto-hidden if no projects — toggle off to hide even with projects' },

@@ -2,7 +2,17 @@ import { Link } from 'react-router-dom'
 import { ArrowRight, Flag, PenLine, MapPin, RotateCcw, BookOpen, Users, Lightbulb, Scale } from 'lucide-react'
 import PageHero from '../components/ui/PageHero'
 import SectionNav from '../components/ui/SectionNav'
-import { useSectionToggles } from '../hooks/useFirestore'
+import { useSectionToggles, usePageContent } from '../hooks/useFirestore'
+
+// Default text blocks — Firestore siteConfig/approachPage values override these when set
+const DEFAULTS: Record<string, string> = {
+  hero_title: 'Our Approach',
+  hero_lead: 'Knowledge applied in the real world, and learning that comes back from that application. Work done with reclaimers — not about them.',
+}
+
+function useTxt(content: Record<string, string> | null, key: string): string {
+  return (content && content[key]) ? content[key] : DEFAULTS[key] ?? ''
+}
 
 // ── Praxis cycle ───────────────────────────────────────────────────────────
 const PRAXIS_STEPS = [
@@ -23,6 +33,8 @@ const APPROACH_PILLARS = [
 
 export default function ApproachPage() {
   const { sections } = useSectionToggles()
+  const { data: pageContent } = usePageContent('approachPage')
+  const txt = (key: string) => useTxt(pageContent, key)
 
   return (
     <div className="bg-white">
@@ -30,10 +42,11 @@ export default function ApproachPage() {
       {/* ── HERO ──────────────────────────────────────────────────── */}
       <PageHero
         imagePath="/images/praxis/hero.jpg"
+        imageUrl={pageContent?.heroImage}
         imageAlt="Network members working alongside reclaimers"
         eyebrow="How the network works"
-        title="Our Approach"
-        lead="Knowledge applied in the real world, and learning that comes back from that application. Work done with reclaimers — not about them."
+        title={txt('hero_title')}
+        lead={txt('hero_lead')}
         variant="dark"
       />
 
