@@ -127,7 +127,7 @@ export default function AboutPage() {
           <div className="container">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
               <div>
-                <p className="eyebrow text-white/50 mb-3">Aim</p>
+                <p className="section-eyebrow text-white/50 mb-3">Aim</p>
                 <p className="font-display font-light text-white italic leading-relaxed"
                    style={{ fontSize: 'clamp(1.1rem, 2vw, 1.4rem)' }}>
                   "To enable societal impact and sustainability by strengthening
@@ -136,7 +136,7 @@ export default function AboutPage() {
                 </p>
               </div>
               <div>
-                <p className="eyebrow text-white/50 mb-3">Impact</p>
+                <p className="section-eyebrow text-white/50 mb-3">Impact</p>
                 <p className="font-body text-white/80 leading-relaxed text-body">
                   To foster a sustainable and just transition by empowering reclaimers
                   and the informal recycling sector through innovative academic-community
@@ -154,7 +154,7 @@ export default function AboutPage() {
       {show('about_pillars') && (
         <section id="pillars" className="section bg-white scroll-mt-32">
           <div className="container">
-            <p className="eyebrow">How the network works</p>
+            <p className="section-eyebrow">How the network works</p>
             <h2 className="section-heading">Five mutually reinforcing pillars</h2>
             <p className="text-body text-muted max-w-2xl mb-10">
               The network adopts a holistic approach rooted in five pillars that
@@ -199,7 +199,7 @@ export default function AboutPage() {
       {show('about_principles') && (
         <section id="principles" className="section bg-white scroll-mt-32">
           <div className="container max-w-3xl">
-            <p className="eyebrow">How we engage</p>
+            <p className="section-eyebrow">How we engage</p>
             <h2 className="section-heading">Principles for every project</h2>
             <p className="text-body text-muted mb-8">
               Every activity in the network is held to a set of principles agreed
@@ -233,7 +233,7 @@ export default function AboutPage() {
       {show('about_team') && (
         <section id="team" className="section bg-surface scroll-mt-32">
           <div className="container">
-            <p className="eyebrow">The people</p>
+            <p className="section-eyebrow">The people</p>
             <h2 className="section-heading">Network team</h2>
             <p className="text-body text-muted max-w-2xl mb-10">{txt('team_intro')}</p>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -276,7 +276,7 @@ export default function AboutPage() {
           <div className="container">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
               <div>
-                <p className="eyebrow">International partnership</p>
+                <p className="section-eyebrow">International partnership</p>
                 <h2 className="section-heading">KU Leuven — HIVA Institute</h2>
                 <div className="space-y-4 text-body text-muted">
                   <p>
@@ -315,7 +315,7 @@ export default function AboutPage() {
       {show('about_partners') && partners.length > 0 && (
         <section className="section bg-surface">
           <div className="container">
-            <p className="eyebrow">Partners & funders</p>
+            <p className="section-eyebrow">Partners & funders</p>
             <h2 className="section-heading">Who we work with</h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mt-4">
               {sortedPartners.map((partner: any) => (
@@ -345,7 +345,7 @@ export default function AboutPage() {
           <div className="container">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
               <div>
-                <p className="eyebrow">Global development alignment</p>
+                <p className="section-eyebrow">Global development alignment</p>
                 <h2 className="section-heading">Contributing to 10 UN Sustainable Development Goals</h2>
                 <p className="text-body text-muted mb-6">
                   The network's work directly contributes to ten of the United
@@ -409,7 +409,7 @@ export default function AboutPage() {
           <div className="container">
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-10 items-start">
               <div className="lg:col-span-2">
-                <p className="eyebrow">Funding & programme</p>
+                <p className="section-eyebrow">Funding & programme</p>
                 <h2 className="section-heading">GES 4.0 Societal Impact Initiative</h2>
                 <p className="text-body text-muted leading-relaxed">{txt('ges_body')}</p>
               </div>
@@ -437,7 +437,7 @@ export default function AboutPage() {
       {/* ── CTA ──────────────────────────────────────────────────── */}
       <section className="section bg-white border-t border-border">
         <div className="container text-center max-w-xl">
-          <p className="eyebrow">Get involved</p>
+          <p className="section-eyebrow">Get involved</p>
           <h2 className="section-heading">Join the network</h2>
           <p className="section-lead mx-auto mb-10">
             The network is open to UJ colleagues from all faculties, international

@@ -48,7 +48,7 @@ export default function TeachingResourcesPage() {
 
           {/* Intro */}
           <div className="max-w-2xl mb-12">
-            <p className="eyebrow mb-4">About these resources</p>
+            <p className="section-eyebrow mb-4">About these resources</p>
             <p className="text-body text-muted leading-relaxed mb-4">
               {txt('intro_p1')}
             </p>

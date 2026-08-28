@@ -131,7 +131,7 @@ export default function HomePage() {
       {show('home_partners_strip') && (
         <section className="bg-surface border-b border-border">
           <div className="container py-10">
-            <p className="eyebrow text-center mb-8">The partnership behind the network</p>
+            <p className="section-eyebrow text-center mb-8">The partnership behind the network</p>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto">
 
               {/* ARO */}
@@ -177,7 +177,7 @@ export default function HomePage() {
           <div className="container">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
               <div>
-                <p className="eyebrow">About the network</p>
+                <p className="section-eyebrow">About the network</p>
                 <h2 className="section-heading">{txt('about_heading')}</h2>
                 <p className="section-lead mb-6">{txt('about_lead')}</p>
                 <p className="text-body text-muted mb-8">{txt('about_body')}</p>
@@ -210,7 +210,7 @@ export default function HomePage() {
       {show('home_workpackages') && (
         <section id="work-packages" className="section bg-surface scroll-mt-32">
           <div className="container">
-            <p className="eyebrow">10 work packages</p>
+            <p className="section-eyebrow">10 work packages</p>
             <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-10">
               <h2 className="section-heading mb-0">
                 Praxis in action —<br className="hidden sm:block" /> across the whole network.
@@ -265,7 +265,7 @@ export default function HomePage() {
       {show('home_story') && !featuredLoading && featured && (
         <section id="featured-story" className="section bg-white scroll-mt-32">
           <div className="container">
-            <p className="eyebrow">Featured story</p>
+            <p className="section-eyebrow">Featured story</p>
             <h2 className="section-heading mb-10">From the network</h2>
             <div className="grid grid-cols-1 lg:grid-cols-5 gap-12 items-start">
               <div className="lg:col-span-3">
@@ -324,7 +324,7 @@ export default function HomePage() {
           <div className="container">
             <div className="flex items-end justify-between mb-10">
               <div>
-                <p className="eyebrow">Portfolio</p>
+                <p className="section-eyebrow">Portfolio</p>
                 <h2 className="section-heading mb-0">Recent projects</h2>
               </div>
               <Link to="/praxis-in-action" className="btn-ghost text-forest hidden sm:flex">
@@ -362,7 +362,7 @@ export default function HomePage() {
           <div className="container">
             <div className="flex items-end justify-between mb-10">
               <div>
-                <p className="eyebrow">Latest</p>
+                <p className="section-eyebrow">Latest</p>
                 <h2 className="section-heading mb-0">News & Updates</h2>
               </div>
               <Link to="/news" className="btn-ghost text-forest hidden sm:flex">
@@ -396,7 +396,7 @@ export default function HomePage() {
         <section id="join" className="section bg-white border-t border-border scroll-mt-32">
           <div className="container">
             <div className="max-w-2xl mx-auto text-center">
-              <p className="eyebrow">Grow the network</p>
+              <p className="section-eyebrow">Grow the network</p>
               <h2 className="section-heading">Join us in building change.</h2>
               <p className="section-lead mx-auto mb-10">
                 We welcome UJ colleagues from all faculties, international university

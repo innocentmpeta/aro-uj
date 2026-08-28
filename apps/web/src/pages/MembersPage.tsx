@@ -14,7 +14,7 @@ export default function MembersPage() {
       <section className="section-sm bg-surface border-b border-border">
         <div className="container flex flex-wrap items-center justify-between gap-4">
           <div>
-            <p className="eyebrow mb-1">Member area</p>
+            <p className="section-eyebrow mb-1">Member area</p>
             <h1 className="font-display font-bold text-ink text-h2">Welcome{user?.email ? `, ${user.email}` : ''}</h1>
           </div>
           <button
@@ -28,7 +28,7 @@ export default function MembersPage() {
 
       <section className="section">
         <div className="container max-w-2xl">
-          <p className="eyebrow">Shared media</p>
+          <p className="section-eyebrow">Shared media</p>
           <h2 className="section-heading">Photos & videos</h2>
           <p className="text-body text-muted mb-8">
             All photos and videos from network events, projects, and campaigns are kept in a

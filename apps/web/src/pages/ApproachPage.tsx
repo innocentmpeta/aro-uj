@@ -60,7 +60,7 @@ export default function ApproachPage() {
       {sections.praxis_cycle !== false && (
         <section id="cycle" className="section-sm bg-surface scroll-mt-32">
           <div className="container">
-            <p className="eyebrow">How it works</p>
+            <p className="section-eyebrow">How it works</p>
             <h2 className="section-heading">The praxis cycle</h2>
             <p className="text-body text-muted max-w-2xl mb-10">
               Every project in the network follows the same cycle — a discipline of
@@ -87,7 +87,7 @@ export default function ApproachPage() {
       {/* Five pillars */}
       <section id="pillars" className="section bg-white scroll-mt-32">
         <div className="container">
-          <p className="eyebrow">Five pillars</p>
+          <p className="section-eyebrow">Five pillars</p>
           <h2 className="section-heading">How we work across disciplines</h2>
           <p className="text-body text-muted max-w-2xl mb-10">
             The network's approach is holistic — every project contributes to
@@ -112,7 +112,7 @@ export default function ApproachPage() {
       {/* Decolonising note */}
       <section id="decolonising" className="section-sm bg-surface border-t border-border scroll-mt-32">
         <div className="container max-w-3xl">
-          <p className="eyebrow">Decolonising praxis</p>
+          <p className="section-eyebrow">Decolonising praxis</p>
           <h2 className="section-heading">Leadership from reclaimers</h2>
           <div className="space-y-5 text-body text-muted">
             <p>
@@ -137,7 +137,7 @@ export default function ApproachPage() {
       {/* ── CTA ───────────────────────────────────────────────────── */}
       <section className="section bg-white border-t border-border">
         <div className="container text-center max-w-xl">
-          <p className="eyebrow">Get involved</p>
+          <p className="section-eyebrow">Get involved</p>
           <h2 className="section-heading">Bring your expertise to the network</h2>
           <p className="section-lead mx-auto mb-10">
             Every faculty and every discipline has something to contribute.

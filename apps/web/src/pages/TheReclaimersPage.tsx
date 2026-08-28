@@ -99,7 +99,7 @@ export default function TheReclaimersPage() {
         <div className="container">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
             <div>
-              <p className="eyebrow">Understanding reclaimers</p>
+              <p className="section-eyebrow">Understanding reclaimers</p>
               <h2 className="section-heading">{txt('understanding_heading')}</h2>
               <div className="space-y-5 text-body text-muted">
                 <Paragraphs text={txt('understanding_body')} />
@@ -129,7 +129,7 @@ export default function TheReclaimersPage() {
       {sections.reclaimers_what !== false && (
       <section id="what-they-do" className="section bg-surface scroll-mt-32">
         <div className="container">
-          <p className="eyebrow">The work</p>
+          <p className="section-eyebrow">The work</p>
           <h2 className="section-heading">What reclaimers do — and why it matters</h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 mt-10">
             {WHAT_THEY_DO.map(({ heading, body, icon: Icon }) => (
@@ -163,7 +163,7 @@ export default function TheReclaimersPage() {
               className="rounded-2xl"
             />
             <div>
-              <p className="eyebrow">Systemic challenges</p>
+              <p className="section-eyebrow">Systemic challenges</p>
               <h2 className="section-heading">
                 {txt('challenges_heading').split('\n').map((line, i, arr) => (
                   <React.Fragment key={i}>{line}{i < arr.length - 1 && <br />}</React.Fragment>
@@ -209,7 +209,7 @@ export default function TheReclaimersPage() {
         <div className="container">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
             <div>
-              <p className="eyebrow">The organisation</p>
+              <p className="section-eyebrow">The organisation</p>
               <h2 className="section-heading">{txt('aro_heading')}</h2>
               <div className="space-y-5 text-body text-muted">
                 <Paragraphs text={txt('aro_body')} />
@@ -291,7 +291,7 @@ export default function TheReclaimersPage() {
       {/* ── CTA ───────────────────────────────────────────────────────── */}
       <section className="section bg-surface border-t border-border">
         <div className="container text-center max-w-2xl">
-          <p className="eyebrow">Get involved</p>
+          <p className="section-eyebrow">Get involved</p>
           <h2 className="section-heading">Work alongside reclaimers</h2>
           <p className="section-lead mx-auto mb-10">
             The Praxis Network works directly with ARO members on real

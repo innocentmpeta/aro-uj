@@ -76,7 +76,7 @@ export default function PraxisInActionPage() {
       {/* ── PROJECTS ──────────────────────────────────────────────── */}
       <section className="section bg-surface">
         <div className="container">
-          <p className="eyebrow">10 work packages</p>
+          <p className="section-eyebrow">10 work packages</p>
           <h2 className="section-heading">All network projects</h2>
           <p className="text-body text-muted max-w-2xl mb-10">
             {txt('intro_text')}
@@ -276,7 +276,7 @@ export default function PraxisInActionPage() {
       {/* ── CTA ───────────────────────────────────────────────────── */}
       <section className="section bg-white border-t border-border">
         <div className="container text-center max-w-xl">
-          <p className="eyebrow">Get involved</p>
+          <p className="section-eyebrow">Get involved</p>
           <h2 className="section-heading">Explore our approach</h2>
           <p className="section-lead mx-auto mb-10">
             Curious how the network turns partnership into practice? See the

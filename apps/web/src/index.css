@@ -46,13 +46,22 @@
   .section-sm { @apply py-section-sm; }
   .container { @apply max-w-site mx-auto px-6 lg:px-10; }
 
-  /* ── Typography helpers ───────────────────────────────────── */
+  /* ── Typography helpers ──────────────────────────────────────
+     Section hierarchy: section-eyebrow (primary heading) > section-heading
+     (subheading) > body text. Names are historical — .eyebrow used to be
+     the small label and .section-heading the big title; a client request
+     flipped the visual hierarchy so the topic label reads as the main
+     heading. .eyebrow itself is kept small/uppercase — PageHero still
+     uses it for the tiny label above the hero title, a separate context. */
   .eyebrow {
     @apply font-body text-xs font-semibold tracking-[0.12em]
            uppercase text-forest mb-4;
   }
+  .section-eyebrow {
+    @apply font-display font-bold text-h1 text-forest mb-3;
+  }
   .section-heading {
-    @apply font-display text-h1 text-ink mb-5 mt-1;
+    @apply font-display font-normal text-h3 text-ink mb-5;
   }
   .section-lead {
     @apply text-lead text-muted max-w-prose;

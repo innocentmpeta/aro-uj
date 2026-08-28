@@ -63,7 +63,7 @@ export default function JoinPage() {
       {/* ── PATHWAYS ──────────────────────────────────────────────────── */}
       <section className="section bg-surface">
         <div className="container">
-          <p className="eyebrow mb-10">Find your pathway</p>
+          <p className="section-eyebrow mb-10">Find your pathway</p>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {pathways.map((pathway: any) => (
               <div key={pathway.id}
@@ -91,7 +91,7 @@ export default function JoinPage() {
       {/* ── CONTACT FORM ──────────────────────────────────────────────── */}
       <section className="section bg-white border-t border-border">
         <div className="container max-w-2xl">
-          <p className="eyebrow">General enquiry</p>
+          <p className="section-eyebrow">General enquiry</p>
           <h2 className="section-heading">Send us a message</h2>
           <p className="text-body text-muted mb-10">
             {txt('form_intro')}

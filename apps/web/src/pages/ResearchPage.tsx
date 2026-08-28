@@ -225,7 +225,7 @@ export default function ResearchPage() {
         <div className="container">
           <div className="flex items-start justify-between gap-4 mb-10">
             <div>
-              <p className="eyebrow">ARO-UJ Praxis Network</p>
+              <p className="section-eyebrow">ARO-UJ Praxis Network</p>
               <h2 className="section-heading mb-2">Network publications</h2>
               <p className="text-body text-muted max-w-2xl">
                 Peer-reviewed articles, reports, and publications produced by
@@ -269,7 +269,7 @@ export default function ResearchPage() {
       <section className="section bg-surface border-t border-border">
         <div className="container">
           <div className="max-w-3xl">
-            <p className="eyebrow">Further reading</p>
+            <p className="section-eyebrow">Further reading</p>
             <h2 className="section-heading">Research from the field</h2>
             <p className="text-body text-muted mb-2">
               A curated live feed of peer-reviewed research on reclaimers,
@@ -350,7 +350,7 @@ export default function ResearchPage() {
       {/* ── RELATED RESOURCES ─────────────────────────────────────────── */}
       <section className="section bg-white border-t border-border">
         <div className="container max-w-2xl text-center">
-          <p className="eyebrow">Related</p>
+          <p className="section-eyebrow">Related</p>
           <h2 className="section-heading">Teaching & learning materials</h2>
           <p className="section-lead mx-auto mb-8">
             Looking for materials to use in a classroom or training setting?

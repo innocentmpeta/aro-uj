@@ -78,7 +78,7 @@ export default function StudentPracticumPage() {
       {show('practicum_past') && PAST_HIGHLIGHTS.length > 0 && (
         <section id="past-projects" className="section bg-white scroll-mt-32">
           <div className="container">
-            <p className="eyebrow">What students have built</p>
+            <p className="section-eyebrow">What students have built</p>
             <h2 className="section-heading">Past student research projects</h2>
             <p className="text-body text-muted max-w-2xl mb-10">
               Every project below was produced by UJ students working directly
@@ -123,7 +123,7 @@ export default function StudentPracticumPage() {
       {show('practicum_ethics') && (
         <section id="principles" className="section bg-surface scroll-mt-32">
           <div className="container max-w-3xl">
-            <p className="eyebrow">How we work</p>
+            <p className="section-eyebrow">How we work</p>
             <h2 className="section-heading">Principles for Student Projects</h2>
             <div className="space-y-5 text-body text-muted mt-2 mb-8">
               <p>
@@ -155,7 +155,7 @@ export default function StudentPracticumPage() {
       {show('practicum_how') && (
         <section id="participate" className="section bg-white scroll-mt-32">
           <div className="container">
-            <p className="eyebrow">The process</p>
+            <p className="section-eyebrow">The process</p>
             <h2 className="section-heading">How can students participate?</h2>
             <p className="text-body text-muted max-w-2xl mb-2">
               There are three ways students can participate in the ARO-UJ Reclaiming Praxis Network:
@@ -181,7 +181,7 @@ export default function StudentPracticumPage() {
           <div className="container">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
               <div>
-                <p className="eyebrow">Who can participate</p>
+                <p className="section-eyebrow">Who can participate</p>
                 <h2 className="section-heading">Open to all UJ faculties</h2>
                 <p className="text-body text-muted">{whoCanApplyText}</p>
               </div>
@@ -200,7 +200,7 @@ export default function StudentPracticumPage() {
       {/* ── APPLY CTA ────────────────────────────────────────────── */}
       <section className="section bg-forest">
         <div className="container text-center max-w-xl">
-          <p className="eyebrow text-white/50">Applications open each semester</p>
+          <p className="section-eyebrow text-white/50">Applications open each semester</p>
           <h2 className="font-display font-bold text-white mb-5"
               style={{ fontSize: 'clamp(1.75rem, 3vw, 2.5rem)' }}>
             Ready to participate?
